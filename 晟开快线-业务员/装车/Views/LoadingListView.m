@@ -22,7 +22,7 @@
     _webView.backgroundColor = [UIColor whiteColor];
     _webView.navigationDelegate = self;
     NSString * path = [[NSString alloc] init];
-    path = [NSString stringWithFormat:@"http://skit-hz.com/book/SKKX/do.html"];
+    path = [NSString stringWithFormat:@"http://skit-hz.com/book/SKKX/record.html"];
     
     NSURL * url = [[NSURL alloc] initWithString:path];
     [_webView loadRequest:[NSURLRequest requestWithURL:url]];

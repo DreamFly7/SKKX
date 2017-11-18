@@ -116,15 +116,16 @@
      含义：JS调用OC
      @param registerHandler 要注册的事件名称(比如这里我们为loginAction)
      @param handel 回调block函数 当后台触发这个事件的时候会执行block里面的代码
+     loginAction
      */
     [_bridge registerHandler:@"loginAction" handler:^(id data, WVJBResponseCallback responseCallback) {
         // data js页面传过来的参数  假设这里是用户名和姓名，字典格式
         NSLog(@"JS调用OC，并传值过来");
         
         // 利用data参数处理自己的逻辑
+        
         NSDictionary * dict = (NSDictionary *)data;
-        NSString * str = [NSString stringWithFormat:@"用户名：%@  姓名：%@",dict[@"userId"],dict[@"name"]];
-        NSLog(@"收到JS端的请求参数：%@",str);
+        NSLog(@"收到JS端的请求参数：%@",dict);
         //创建一个消息对象 在首页接收跳转界面
         NSNotification * notice = [NSNotification notificationWithName:@"sweep" object:nil userInfo:nil];
         //发送消息
