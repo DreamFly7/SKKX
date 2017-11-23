@@ -12,8 +12,11 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        [self createWebView];
-        [self createWebViewJavascriptBridge];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self createWebView];
+            [self createWebViewJavascriptBridge];
+        });
+
     }
     return self;
 }
@@ -23,10 +26,6 @@
     _webView.backgroundColor = [UIColor whiteColor];
     _webView.navigationDelegate = self;
     _webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-//    NSString * path = [[NSString alloc] init];
-//    path = [NSString stringWithFormat:@"http://skit-hz.com/book/SKKX/loading.html"];
-//    NSURL * url = [[NSURL alloc] initWithString:path];
-//    [_webView loadRequest:[NSURLRequest requestWithURL:url]];
     [self addSubview:_webView];
     
 }

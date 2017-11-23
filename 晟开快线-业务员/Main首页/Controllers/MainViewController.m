@@ -87,6 +87,21 @@
     gradientLayer.frame = CGRectMake(0, SCREEN_W/5*2+60, SCREEN_W, 2);
     [self.view.layer addSublayer:gradientLayer];
 
+    [self createAllFunctionView];
+    
+    
+    // 接收通知
+    // 获取通知中心单例对象
+    NSNotificationCenter * center = [NSNotificationCenter defaultCenter];
+    // 添加当前类对象为一个观察者，接收来自用户中心切换版本时候的通知
+    [center addObserver:self selector:@selector(createAllFunctionView) name:@"applicationDidBecomeActive" object:nil]; // 进入前台
+    [center addObserver:self selector:@selector(sweepQrCodeEvent) name:@"scanning" object:nil];  // 交账扫描二维码
+    [center addObserver:self selector:@selector(sweepQrCodeEvent) name:@"loading" object:nil];   // 装车扫描二维码
+    [center addObserver:self selector:@selector(printOrderEvent) name:@"printOrder" object:nil]; // 打印订单
+    
+}
+
+- (void)createAllFunctionView {
     /* 使用GCD返回主线程 进行UI层面的赋值 */
     dispatch_async(dispatch_get_main_queue(), ^{
         
@@ -107,14 +122,6 @@
             
         });
     });
-
-    // 接收通知
-    //获取通知中心单例对象
-    NSNotificationCenter * center = [NSNotificationCenter defaultCenter];
-    //添加当前类对象为一个观察者，接收来自用户中心切换版本时候的通知
-    [center addObserver:self selector:@selector(sweepQrCodeEvent) name:@"scanning" object:nil]; // 交账扫描二维码
-    [center addObserver:self selector:@selector(sweepQrCodeEvent) name:@"loading" object:nil]; // 装车扫描二维码
-    
 }
 
 // 财务

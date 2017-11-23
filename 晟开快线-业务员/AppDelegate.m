@@ -76,6 +76,11 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    NSLog(@"进入前台");
+    //创建一个消息对象 在首页接收跳转界面
+    NSNotification * notice = [NSNotification notificationWithName:@"applicationDidBecomeActive" object:nil userInfo:nil];
+    //发送消息
+    [[NSNotificationCenter defaultCenter] postNotification:notice];
 }
 
 
