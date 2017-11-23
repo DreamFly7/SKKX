@@ -83,12 +83,6 @@
 		BB5CC54F1FBD336500B09519 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5CC51D1FBD336500B09519 /* UIImageView+WebCache.m */; };
 		BB5CC5501FBD336500B09519 /* UIView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5CC51F1FBD336500B09519 /* UIView+WebCache.m */; };
 		BB5CC5511FBD336500B09519 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5CC5211FBD336500B09519 /* UIView+WebCacheOperation.m */; };
-		BB5CC5601FBD339200B09519 /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5CC5541FBD339200B09519 /* AFHTTPSessionManager.m */; };
-		BB5CC5611FBD339200B09519 /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5CC5571FBD339200B09519 /* AFNetworkReachabilityManager.m */; };
-		BB5CC5621FBD339200B09519 /* AFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5CC5591FBD339200B09519 /* AFSecurityPolicy.m */; };
-		BB5CC5631FBD339200B09519 /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5CC55B1FBD339200B09519 /* AFURLRequestSerialization.m */; };
-		BB5CC5641FBD339200B09519 /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5CC55D1FBD339200B09519 /* AFURLResponseSerialization.m */; };
-		BB5CC5651FBD339200B09519 /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5CC55F1FBD339200B09519 /* AFURLSessionManager.m */; };
 		BB5CC57F1FBD33B500B09519 /* NSArray+Plus.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5CC5681FBD33B500B09519 /* NSArray+Plus.m */; };
 		BB5CC5801FBD33B500B09519 /* NSDate+Plus.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5CC56A1FBD33B500B09519 /* NSDate+Plus.m */; };
 		BB5CC5811FBD33B500B09519 /* NSMutableDictionary+Plus.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5CC56C1FBD33B500B09519 /* NSMutableDictionary+Plus.m */; };
@@ -122,6 +116,11 @@
 		BB5CC5C31FBD82BE00B09519 /* LoadingListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5CC5C21FBD82BE00B09519 /* LoadingListViewController.m */; };
 		BB5CC5CA1FBD831100B09519 /* SendOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5CC5C91FBD831000B09519 /* SendOrderViewController.m */; };
 		BB5CC5CD1FBD833600B09519 /* SendOrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5CC5CC1FBD833600B09519 /* SendOrderView.m */; };
+		BB80BE8B1FC6A1750027F649 /* libAFNetworking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB80BE8A1FC6A1750027F649 /* libAFNetworking.a */; };
+		BBD558CA1FC2B40A00509289 /* PrintOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD558C91FC2B40A00509289 /* PrintOrderViewController.m */; };
+		BBD558CE1FC2B77800509289 /* libUartLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BBD558CC1FC2B77800509289 /* libUartLib.a */; };
+		BBE209551FC3B7D700680EA4 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBE209541FC3B7D700680EA4 /* LoginViewController.m */; };
+		BBE209581FC3B81800680EA4 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBE209571FC3B81800680EA4 /* RegisterViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -292,19 +291,6 @@
 		BB5CC51F1FBD336500B09519 /* UIView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCache.m"; sourceTree = "<group>"; };
 		BB5CC5201FBD336500B09519 /* UIView+WebCacheOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+WebCacheOperation.h"; sourceTree = "<group>"; };
 		BB5CC5211FBD336500B09519 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
-		BB5CC5531FBD339200B09519 /* AFHTTPSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPSessionManager.h; sourceTree = "<group>"; };
-		BB5CC5541FBD339200B09519 /* AFHTTPSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPSessionManager.m; sourceTree = "<group>"; };
-		BB5CC5551FBD339200B09519 /* AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworking.h; sourceTree = "<group>"; };
-		BB5CC5561FBD339200B09519 /* AFNetworkReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkReachabilityManager.h; sourceTree = "<group>"; };
-		BB5CC5571FBD339200B09519 /* AFNetworkReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFNetworkReachabilityManager.m; sourceTree = "<group>"; };
-		BB5CC5581FBD339200B09519 /* AFSecurityPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFSecurityPolicy.h; sourceTree = "<group>"; };
-		BB5CC5591FBD339200B09519 /* AFSecurityPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFSecurityPolicy.m; sourceTree = "<group>"; };
-		BB5CC55A1FBD339200B09519 /* AFURLRequestSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLRequestSerialization.h; sourceTree = "<group>"; };
-		BB5CC55B1FBD339200B09519 /* AFURLRequestSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLRequestSerialization.m; sourceTree = "<group>"; };
-		BB5CC55C1FBD339200B09519 /* AFURLResponseSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLResponseSerialization.h; sourceTree = "<group>"; };
-		BB5CC55D1FBD339200B09519 /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLResponseSerialization.m; sourceTree = "<group>"; };
-		BB5CC55E1FBD339200B09519 /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
-		BB5CC55F1FBD339200B09519 /* AFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLSessionManager.m; sourceTree = "<group>"; };
 		BB5CC5671FBD33B500B09519 /* NSArray+Plus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Plus.h"; sourceTree = "<group>"; };
 		BB5CC5681FBD33B500B09519 /* NSArray+Plus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Plus.m"; sourceTree = "<group>"; };
 		BB5CC5691FBD33B500B09519 /* NSDate+Plus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Plus.h"; sourceTree = "<group>"; };
@@ -371,6 +357,15 @@
 		BB5CC5C91FBD831000B09519 /* SendOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendOrderViewController.m; sourceTree = "<group>"; };
 		BB5CC5CB1FBD833600B09519 /* SendOrderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendOrderView.h; sourceTree = "<group>"; };
 		BB5CC5CC1FBD833600B09519 /* SendOrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendOrderView.m; sourceTree = "<group>"; };
+		BB80BE8A1FC6A1750027F649 /* libAFNetworking.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAFNetworking.a; path = "Pods/../build/Debug-iphoneos/AFNetworking/libAFNetworking.a"; sourceTree = "<group>"; };
+		BBD558C81FC2B40A00509289 /* PrintOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrintOrderViewController.h; sourceTree = "<group>"; };
+		BBD558C91FC2B40A00509289 /* PrintOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrintOrderViewController.m; sourceTree = "<group>"; };
+		BBD558CC1FC2B77800509289 /* libUartLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libUartLib.a; sourceTree = "<group>"; };
+		BBD558CD1FC2B77800509289 /* UartLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UartLib.h; sourceTree = "<group>"; };
+		BBE209531FC3B7D700680EA4 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		BBE209541FC3B7D700680EA4 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		BBE209561FC3B81800680EA4 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
+		BBE209571FC3B81800680EA4 /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -378,11 +373,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB80BE8B1FC6A1750027F649 /* libAFNetworking.a in Frameworks */,
 				BB034E001FBEEDEB00411FAD /* SystemConfiguration.framework in Frameworks */,
 				BB034DE91FBEE12000411FAD /* AVFoundation.framework in Frameworks */,
 				BB034DFE1FBEEDDE00411FAD /* AudioToolbox.framework in Frameworks */,
 				BB034DFC1FBEEDD800411FAD /* CoreMotion.framework in Frameworks */,
 				BB034DFA1FBEED6200411FAD /* OpenGLES.framework in Frameworks */,
+				BBD558CE1FC2B77800509289 /* libUartLib.a in Frameworks */,
 				BB034DF81FBEED5B00411FAD /* CoreTelephony.framework in Frameworks */,
 				BB034DF61FBEED1800411FAD /* PgyUpdate.framework in Frameworks */,
 				BB034DF41FBEED1000411FAD /* PgySDK.framework in Frameworks */,
@@ -419,6 +416,7 @@
 		BB034DE71FBEE12000411FAD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BB80BE8A1FC6A1750027F649 /* libAFNetworking.a */,
 				BB034DFF1FBEEDEB00411FAD /* SystemConfiguration.framework */,
 				BB034DFD1FBEEDDE00411FAD /* AudioToolbox.framework */,
 				BB034DFB1FBEEDD800411FAD /* CoreMotion.framework */,
@@ -487,6 +485,7 @@
 				BB5CC5661FBD33B500B09519 /* Category */,
 				BB5CC4B51FBD336500B09519 /* SDK */,
 				BB5CC4A31FBD333400B09519 /* Tools */,
+				BBE2094F1FC3B7BF00680EA4 /* 登录注册 */,
 				BB5CC49C1FBD30E800B09519 /* Main首页 */,
 				BB5CC4961FBD26A800B09519 /* 开单 */,
 				BB5CC4921FBD26A100B09519 /* 交账 */,
@@ -829,6 +828,8 @@
 			children = (
 				BB5CC58E1FBD810A00B09519 /* PlaceOrderViewController.h */,
 				BB5CC58F1FBD810A00B09519 /* PlaceOrderViewController.m */,
+				BBD558C81FC2B40A00509289 /* PrintOrderViewController.h */,
+				BBD558C91FC2B40A00509289 /* PrintOrderViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -914,10 +915,10 @@
 		BB5CC4B51FBD336500B09519 /* SDK */ = {
 			isa = PBXGroup;
 			children = (
+				BBD558CB1FC2B77800509289 /* 打印机 */,
 				BB034DF51FBEED1800411FAD /* PgyUpdate.framework */,
 				BB034DF31FBEED1000411FAD /* PgySDK.framework */,
 				BB38407F1FBE7AC300ACB5AF /* WebViewJavascriptBridge */,
-				BB5CC5521FBD339200B09519 /* AFNetworking3.0 */,
 				BB5CC4B61FBD336500B09519 /* IQKeyboardManager */,
 				BB5CC4DF1FBD336500B09519 /* MJRefresh */,
 				BB5CC4F91FBD336500B09519 /* PrefixHeader.pch */,
@@ -1100,26 +1101,6 @@
 			path = SDWebImage;
 			sourceTree = "<group>";
 		};
-		BB5CC5521FBD339200B09519 /* AFNetworking3.0 */ = {
-			isa = PBXGroup;
-			children = (
-				BB5CC5531FBD339200B09519 /* AFHTTPSessionManager.h */,
-				BB5CC5541FBD339200B09519 /* AFHTTPSessionManager.m */,
-				BB5CC5551FBD339200B09519 /* AFNetworking.h */,
-				BB5CC5561FBD339200B09519 /* AFNetworkReachabilityManager.h */,
-				BB5CC5571FBD339200B09519 /* AFNetworkReachabilityManager.m */,
-				BB5CC5581FBD339200B09519 /* AFSecurityPolicy.h */,
-				BB5CC5591FBD339200B09519 /* AFSecurityPolicy.m */,
-				BB5CC55A1FBD339200B09519 /* AFURLRequestSerialization.h */,
-				BB5CC55B1FBD339200B09519 /* AFURLRequestSerialization.m */,
-				BB5CC55C1FBD339200B09519 /* AFURLResponseSerialization.h */,
-				BB5CC55D1FBD339200B09519 /* AFURLResponseSerialization.m */,
-				BB5CC55E1FBD339200B09519 /* AFURLSessionManager.h */,
-				BB5CC55F1FBD339200B09519 /* AFURLSessionManager.m */,
-			);
-			path = AFNetworking3.0;
-			sourceTree = "<group>";
-		};
 		BB5CC5661FBD33B500B09519 /* Category */ = {
 			isa = PBXGroup;
 			children = (
@@ -1182,6 +1163,50 @@
 			children = (
 				BB5CC5CB1FBD833600B09519 /* SendOrderView.h */,
 				BB5CC5CC1FBD833600B09519 /* SendOrderView.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		BBD558CB1FC2B77800509289 /* 打印机 */ = {
+			isa = PBXGroup;
+			children = (
+				BBD558CC1FC2B77800509289 /* libUartLib.a */,
+				BBD558CD1FC2B77800509289 /* UartLib.h */,
+			);
+			path = "打印机";
+			sourceTree = "<group>";
+		};
+		BBE2094F1FC3B7BF00680EA4 /* 登录注册 */ = {
+			isa = PBXGroup;
+			children = (
+				BBE209501FC3B7BF00680EA4 /* Controllers */,
+				BBE209511FC3B7BF00680EA4 /* Models */,
+				BBE209521FC3B7BF00680EA4 /* Views */,
+			);
+			path = "登录注册";
+			sourceTree = "<group>";
+		};
+		BBE209501FC3B7BF00680EA4 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				BBE209531FC3B7D700680EA4 /* LoginViewController.h */,
+				BBE209541FC3B7D700680EA4 /* LoginViewController.m */,
+				BBE209561FC3B81800680EA4 /* RegisterViewController.h */,
+				BBE209571FC3B81800680EA4 /* RegisterViewController.m */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		BBE209511FC3B7BF00680EA4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		BBE209521FC3B7BF00680EA4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1383,6 +1408,7 @@
 				BB5CC53A1FBD336500B09519 /* MJRefreshLegendFooter.m in Sources */,
 				BB5CC59F1FBD819200B09519 /* SearchOrderView.m in Sources */,
 				BB5CC5AB1FBD81F400B09519 /* OrderListView.m in Sources */,
+				BBE209551FC3B7D700680EA4 /* LoginViewController.m in Sources */,
 				BB3840891FBE7AC300ACB5AF /* WebViewJavascriptBridge_JS.m in Sources */,
 				BB5CC5801FBD33B500B09519 /* NSDate+Plus.m in Sources */,
 				BB5CC5351FBD336500B09519 /* MJRefreshConst.m in Sources */,
@@ -1413,7 +1439,6 @@
 				BB5CC5511FBD336500B09519 /* UIView+WebCacheOperation.m in Sources */,
 				BB5CC52D1FBD336500B09519 /* IQTitleBarButtonItem.m in Sources */,
 				BB5CC5411FBD336500B09519 /* NSImage+WebCache.m in Sources */,
-				BB5CC5631FBD339200B09519 /* AFURLRequestSerialization.m in Sources */,
 				BB5CC52A1FBD336500B09519 /* IQTextView.m in Sources */,
 				BB5CC4441FBD248F00B09519 /* AppDelegate.m in Sources */,
 				BB5CC5A21FBD81AC00B09519 /* CollectionMoneyView.m in Sources */,
@@ -1431,7 +1456,6 @@
 				BB5CC5901FBD810A00B09519 /* PlaceOrderViewController.m in Sources */,
 				BB5CC4B31FBD333400B09519 /* BaseService.m in Sources */,
 				BB5CC5B71FBD825800B09519 /* InvoiceListView.m in Sources */,
-				BB5CC5601FBD339200B09519 /* AFHTTPSessionManager.m in Sources */,
 				BB5CC5471FBD336500B09519 /* SDWebImageDownloaderOperation.m in Sources */,
 				BB5CC5311FBD336500B09519 /* LICENSE.md in Sources */,
 				BB5CC4B41FBD333400B09519 /* Utils.m in Sources */,
@@ -1448,18 +1472,16 @@
 				BB5CC5271FBD336500B09519 /* IQUIWindow+Hierarchy.m in Sources */,
 				BB5CC5381FBD336500B09519 /* MJRefreshGifHeader.m in Sources */,
 				BB5CC54C1FBD336500B09519 /* UIImage+MultiFormat.m in Sources */,
-				BB5CC5611FBD339200B09519 /* AFNetworkReachabilityManager.m in Sources */,
 				BB5CC5451FBD336500B09519 /* SDWebImageDecoder.m in Sources */,
 				BB5CC4411FBD248F00B09519 /* main.m in Sources */,
 				BB5CC5371FBD336500B09519 /* MJRefreshGifFooter.m in Sources */,
 				BB5CC5221FBD336500B09519 /* IQNSArray+Sort.m in Sources */,
 				BB5CC5931FBD812800B09519 /* PlaceOrderView.m in Sources */,
 				BB5CC5391FBD336500B09519 /* MJRefreshHeader.m in Sources */,
+				BBD558CA1FC2B40A00509289 /* PrintOrderViewController.m in Sources */,
 				BB5CC5881FBD33B500B09519 /* UITableView+Plus.m in Sources */,
-				BB5CC5651FBD339200B09519 /* AFURLSessionManager.m in Sources */,
 				BB5CC54A1FBD336500B09519 /* UIButton+WebCache.m in Sources */,
 				BB5CC5361FBD336500B09519 /* MJRefreshFooter.m in Sources */,
-				BB5CC5621FBD339200B09519 /* AFSecurityPolicy.m in Sources */,
 				BB5CC5491FBD336500B09519 /* SDWebImagePrefetcher.m in Sources */,
 				BB5CC4B21FBD333400B09519 /* BaseBusiness.m in Sources */,
 				BB5CC53E1FBD336500B09519 /* UIView+MJExtension.m in Sources */,
@@ -1473,7 +1495,7 @@
 				BB5CC53C1FBD336500B09519 /* UIScrollView+MJExtension.m in Sources */,
 				BB5CC4A21FBD310E00B09519 /* MainViewController.m in Sources */,
 				BB5CC5831FBD33B500B09519 /* NSString+Plus.m in Sources */,
-				BB5CC5641FBD339200B09519 /* AFURLResponseSerialization.m in Sources */,
+				BBE209581FC3B81800680EA4 /* RegisterViewController.m in Sources */,
 				BB5CC5441FBD336500B09519 /* SDWebImageCompat.m in Sources */,
 				BB5CC52C1FBD336500B09519 /* IQPreviousNextView.m in Sources */,
 				BB034DF21FBEE19200411FAD /* QRCodeScanViewController.m in Sources */,
@@ -1640,6 +1662,11 @@
 				INFOPLIST_FILE = "晟开快线-业务员/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/晟开快线-业务员/SDK/打印机",
+					"$(PROJECT_DIR)/build/Debug-iphoneos/AFNetworking",
+				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.skitchina.logistics-newskkx";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1664,6 +1691,11 @@
 				INFOPLIST_FILE = "晟开快线-业务员/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/晟开快线-业务员/SDK/打印机",
+					"$(PROJECT_DIR)/build/Debug-iphoneos/AFNetworking",
+				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.skitchina.logistics-newskkx";
 				PRODUCT_NAME = "$(TARGET_NAME)";

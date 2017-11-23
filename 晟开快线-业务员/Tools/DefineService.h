@@ -15,7 +15,7 @@
 #define CarOwners                     2
 
 //晟开快线服务器
-#define RequestURL                  @"http://123.206.24.66:9999/skitchina3-1.0-SNAPSHOT"
+#define RequestURL                  @"http://123.206.24.66:8888/skkx"
 
 //加密的key
 #define AESKey                      @"/client/getKey"
@@ -25,6 +25,6 @@
 //注册
 #define RequestRegister             @"/user/addUser"
 //登录
-#define RequestLogin                @"/user/userLogin"
+#define RequestLogin                @"/Login/userLogin"
 
 #endif /* Define_h */

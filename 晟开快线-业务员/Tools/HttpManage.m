@@ -37,5 +37,12 @@
     }];
 }
 
+// 登录
+-(void)postLoginWithParmaeters:(NSMutableDictionary*)dic Success:(void(^)(NSMutableDictionary *dic))block {
+    [[BaseBusiness sharedInstance] requestPostDataWithAPI:RequestLogin params:dic callBack:^(BOOL success, NSMutableDictionary *json) {
+        block(json);
+    }];
+}
+
 
 @end

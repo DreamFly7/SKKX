@@ -19,6 +19,16 @@
 }
 
 -(void)createWebView{
+    UIFont * font = [UIFont fontWithName:@"HelveticaNeue" size:16.0];
+    UIButton * reloadButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    reloadButton.frame = CGRectMake(110,200, 100, 35);
+    reloadButton.titleLabel.font = font;
+    [reloadButton setTitle:@"重新加载" forState:UIControlStateNormal];
+    reloadButton.titleLabel.textColor = [UIColor blueColor];
+    [reloadButton addTarget:_webView action:@selector(reload) forControlEvents:UIControlEventTouchUpInside];
+//    [self addSubview:reloadButton];
+    [self insertSubview:reloadButton aboveSubview:_webView];
+    
     _webView = [[WKWebView alloc]initWithFrame:CGRectMake(0, 20, SCREEN_W, SCREEN_H-(SCREEN_W/5*2+64))];
     _webView.backgroundColor = [UIColor whiteColor];
     _webView.navigationDelegate = self;
@@ -62,7 +72,7 @@
     
     //请求加载html，注意：这里h5加载完，会自动执行一个调用oc的方法
     [self loadExamplePage:_webView];
-    [self renderButtons:_webView];
+//    [self renderButtons:_webView];
     
     //申明js调用oc方法的处理事件，这里写了后，h5那边只要请求了，oc内部就会响应
     [self JS2OC];
@@ -85,18 +95,13 @@
     callbackButton.titleLabel.font = font;
     
     UIButton* reloadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [reloadButton setTitle:@"Reload webview" forState:UIControlStateNormal];
+    [reloadButton setTitle:@"重新加载" forState:UIControlStateNormal];
+    reloadButton.titleLabel.font = hFontSize(16);
+    reloadButton.titleLabel.textColor = [UIColor blueColor];
     [reloadButton addTarget:webView action:@selector(reload) forControlEvents:UIControlEventTouchUpInside];
     [self insertSubview:reloadButton aboveSubview:webView];
     reloadButton.frame = CGRectMake(110,200, 100, 35);
     reloadButton.titleLabel.font = font;
-}
-
-- (void)callHandler:(id)sender {
-    id data = @{ @"greetingFromObjC": @"Hi there, JS!" };
-    [_bridge callHandler:@"testJavascriptHandler" data:data responseCallback:^(id response) {
-        NSLog(@"testJavascriptHandler responded: %@", response);
-    }];
 }
 
 - (void)loadExamplePage:(WKWebView*)webView {
@@ -104,11 +109,6 @@
       path = [NSString stringWithFormat:@"http://skit-hz.com/book/SKKX/do.html"];
       NSURL * url = [[NSURL alloc] initWithString:path];
       [webView loadRequest:[NSURLRequest requestWithURL:url]];
-    
-      //NSString * htmlPath = [[NSBundle mainBundle] pathForResource:@"ExampleApp" ofType:@"html"];
-      //NSString * appHtml = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:nil];
-      //NSURL * baseURL = [NSURL fileURLWithPath:htmlPath];
-      //[webView loadHTMLString:appHtml baseURL:baseURL];
 }
 
 -(void)JS2OC{
@@ -127,13 +127,12 @@
         NSDictionary * dict = (NSDictionary *)data;
         NSLog(@"收到JS端的请求参数：%@",dict);
         //创建一个消息对象 在首页接收跳转界面
-        NSNotification * notice = [NSNotification notificationWithName:@"sweep" object:nil userInfo:nil];
+        NSNotification * notice = [NSNotification notificationWithName:@"scanning" object:nil userInfo:nil];
         //发送消息
         [[NSNotificationCenter defaultCenter] postNotification:notice];
         // responseCallback 给js的回复
         responseCallback(@"报告，oc已收到js的请求");
     }];
-    
 }
 
 -(void)OC2JS{

@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "MainViewController.h"
+#import "LoginViewController.h"
 #import <PgySDK/PgyManager.h>
 #import <PgyUpdate/PgyUpdateManager.h>
 
@@ -22,23 +23,37 @@
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-    [self toMainVc];
+    [self toLoginVc];
     //启动蒲公英更新检查SDK
     [[PgyUpdateManager sharedPgyManager] startManagerWithAppId:@"a31bca4e260ef197a7c9cf06668ae4f3"];
     [[PgyUpdateManager sharedPgyManager] checkUpdate];
     [[PgyUpdateManager sharedPgyManager] updateLocalBuildNumber];
     
+    // 接收通知
+    //获取通知中心单例对象
+    NSNotificationCenter * center = [NSNotificationCenter defaultCenter];
+    //添加当前类对象为一个观察者，接收来自登录中心切换版本时候的通知
+    [center addObserver:self selector:@selector(toMainVc) name:@"loginSuccess" object:nil];
+    [center addObserver:self selector:@selector(toLoginVc) name:@"logoutSuccess" object:nil];
     return YES;
 }
 
+// 主界面
 -(void)toMainVc{
-    
     MainViewController * VC = [[MainViewController alloc]init];
     UINavigationController * NAV = [[UINavigationController alloc] initWithRootViewController:VC];
     NAV.navigationBar.barTintColor = ColorWhite;
     [NAV.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:RGBCOLOR(42, 143, 240)}];
     self.window.rootViewController = NAV;
-    
+}
+
+// 登录界面
+- (void)toLoginVc {
+    LoginViewController * loginVC = [[LoginViewController alloc] init];
+    UINavigationController * NAV = [[UINavigationController alloc] initWithRootViewController:loginVC];
+    NAV.navigationBar.barTintColor = ColorWhite;
+    [NAV.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:RGBCOLOR(42, 143, 240)}];
+    self.window.rootViewController = NAV;
 }
 
 

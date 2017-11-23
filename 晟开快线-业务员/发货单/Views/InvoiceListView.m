@@ -22,12 +22,6 @@
     _webView = [[WKWebView alloc]initWithFrame:CGRectMake(0, 20, SCREEN_W, SCREEN_H-(SCREEN_W/5*2+64))];
     _webView.backgroundColor = [UIColor whiteColor];
     _webView.navigationDelegate = self;
-    NSString * path = [[NSString alloc] init];
-    path = [NSString stringWithFormat:@"http://skit-hz.com/book/SKKX/shipping.html"];
-    
-    NSURL * url = [[NSURL alloc] initWithString:path];
-//    [_webView loadRequest:[NSURLRequest requestWithURL:url]];
-    //    _webView.dataDetectorTypes = UIDataDetectorTypeNone; //隐藏链接下划线
     _webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     [self addSubview:_webView];
 }
@@ -61,7 +55,6 @@
     
     //请求加载html，注意：这里h5加载完，会自动执行一个调用oc的方法
     [self loadExamplePage:_webView];
-    [self renderButtons:_webView];
     
     //申明js调用oc方法的处理事件，这里写了后，h5那边只要请求了，oc内部就会响应
     [self JS2OC];
@@ -73,41 +66,11 @@
     });
 }
 
-- (void)renderButtons:(WKWebView*)webView {
-    UIFont* font = [UIFont fontWithName:@"HelveticaNeue" size:12.0];
-    
-    UIButton *callbackButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [callbackButton setTitle:@"Call handler" forState:UIControlStateNormal];
-    [callbackButton addTarget:self action:@selector(OC2JS) forControlEvents:UIControlEventTouchUpInside];
-    //[self insertSubview:callbackButton aboveSubview:webView];
-    callbackButton.frame = CGRectMake(10, 200, 100, 35);
-    callbackButton.titleLabel.font = font;
-    
-    UIButton* reloadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [reloadButton setTitle:@"Reload webview" forState:UIControlStateNormal];
-    [reloadButton addTarget:webView action:@selector(reload) forControlEvents:UIControlEventTouchUpInside];
-    //[self insertSubview:reloadButton aboveSubview:webView];
-    reloadButton.frame = CGRectMake(110,200, 100, 35);
-    reloadButton.titleLabel.font = font;
-}
-
-- (void)callHandler:(id)sender {
-    id data = @{ @"greetingFromObjC": @"Hi there, JS!" };
-    [_bridge callHandler:@"testJavascriptHandler" data:data responseCallback:^(id response) {
-        NSLog(@"testJavascriptHandler responded: %@", response);
-    }];
-}
-
 - (void)loadExamplePage:(WKWebView*)webView {
     NSString * path = [[NSString alloc] init];
     path = [NSString stringWithFormat:@"http://skit-hz.com/book/SKKX/shipping.html"];
     NSURL * url = [[NSURL alloc] initWithString:path];
     [webView loadRequest:[NSURLRequest requestWithURL:url]];
-    
-//    NSString * htmlPath = [[NSBundle mainBundle] pathForResource:@"ExampleApp" ofType:@"html"];
-//    NSString * appHtml = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:nil];
-//    NSURL * baseURL = [NSURL fileURLWithPath:htmlPath];
-//    [webView loadHTMLString:appHtml baseURL:baseURL];
 }
 
 -(void)JS2OC{
@@ -121,10 +84,8 @@
         NSLog(@"JS调用OC，并传值过来");
         
         // 利用data参数处理自己的逻辑
-        NSDictionary *dict = (NSDictionary *)data;
-        NSString *str = [NSString stringWithFormat:@"用户名：%@  姓名：%@",dict[@"userId"],dict[@"name"]];
-        //[self renderButtons:str];
-        
+        NSDictionary * dict = (NSDictionary *)data;
+        NSLog(@"%@",dict);
         // responseCallback 给js的回复
         responseCallback(@"报告，oc已收到js的请求");
     }];
@@ -139,7 +100,6 @@
      注意，这里callHandler分3种，根据需不需要传参数和需不需要后台返回执行结果来决定用哪个
      */
     
-    //[_bridge callHandler:@"registerAction" data:@"我是oc请求js的参数"];
     [_bridge callHandler:@"registerAction" data:@"uid:123 pwd:123" responseCallback:^(id responseData) {
         NSLog(@"oc请求js后接受的回调结果：%@",responseData);
     }];

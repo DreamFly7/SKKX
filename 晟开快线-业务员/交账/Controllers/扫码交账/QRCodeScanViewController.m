@@ -74,7 +74,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    [self startScan]; 
+    [self startScan]; 
 }
 
 
@@ -155,7 +155,7 @@
     _input = [AVCaptureDeviceInput deviceInputWithDevice:_device error:nil];
     
     // Output 设备的输出  //创建输出流
-    _output = [[AVCaptureMetadataOutput alloc]init];
+    _output = [[AVCaptureMetadataOutput alloc] init];
     
     //设置代理   在主线程里刷新
     [_output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
