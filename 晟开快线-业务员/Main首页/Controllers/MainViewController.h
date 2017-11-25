@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface MainViewController : UIViewController
-
+@property (nonatomic, strong) NSString * plistFile; // 存储回到后台时候的界面
 @end

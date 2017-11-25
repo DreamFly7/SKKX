@@ -16,4 +16,7 @@
  (NSString * str): Block的参数是NSString实例对象
  */
 @property (nonatomic, strong) void(^functionBlock)(NSUInteger functionNum);
+
+@property (nonatomic, strong) void(^pushBlock)();
+
 @end

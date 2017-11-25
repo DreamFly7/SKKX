@@ -12,22 +12,33 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self createWebView];
-            [self createWebViewJavascriptBridge];
-        });
-
+        [self createWebView];
+        [self createWebViewJavascriptBridge];
+        // 获取通知中心单例对象
+        NSNotificationCenter * center = [NSNotificationCenter defaultCenter];
+        // 添加当前类对象为一个观察者，接收来自用户中心切换版本时候的通知
+        [center addObserver:self selector:@selector(changeUpWebHeight) name:@"pushUp" object:nil];  // WEB加长
+        [center addObserver:self selector:@selector(changeDownWebHeight) name:@"pushDown" object:nil];  // WEB缩短
     }
     return self;
 }
 
 -(void)createWebView{
-    _webView = [[WKWebView alloc]initWithFrame:CGRectMake(0, 20, SCREEN_W, SCREEN_H-(SCREEN_W/5*2+64))];
+    _webView = [[WKWebView alloc] init];
+    _webView.frame = CGRectMake(0, 0, SCREEN_W, SCREEN_H-(SCREEN_W/5*2+64));
     _webView.backgroundColor = [UIColor whiteColor];
     _webView.navigationDelegate = self;
     _webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     [self addSubview:_webView];
-    
+    [MBProgressHUD showMessage:@"正在加载数据中....."];
+}
+
+- (void)changeUpWebHeight {
+    _webView.frame = CGRectMake(0, 0, SCREEN_W, SCREEN_H-64-50);
+}
+
+- (void)changeDownWebHeight {
+    _webView.frame = CGRectMake(0, 0, SCREEN_W, SCREEN_H-(SCREEN_W/5*2+64));
 }
 
 #pragma mark- Delegate Webview
@@ -42,10 +53,14 @@
 //3.页面加载完成(view的过渡动画的移除可在此方法中进行)
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     NSLog(@"9页面加载完成");
+    // 移除HUD
+    [MBProgressHUD hideHUD];
 }
 //4.页面加载失败
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
     NSLog(@"9页面加载失败");
+    // 提醒有没有新数据
+    [MBProgressHUD showError:@"加载失败"];
 }
 
 #pragma mark -- createWebViewJavascriptBridge
@@ -65,7 +80,7 @@
     
     //模拟操作：2秒后，oc会调用js的方法
     //注意：这里厉害的是，我们不需要等待html加载完成，就能处理oc的请求事件；此外，webview的request 也可以在这个请求后面执行（可以把上面的[self loadExamplePage:webView]放到[self OC2JS]后面执行，结果是一样的）
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self OC2JS];
     });
 }

@@ -44,25 +44,26 @@
 #pragma mark- Delegate Webview
 //1.准备加载页面
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
-    NSLog(@"2准备加载页面");
+    NSLog(@"登录界面准备加载页面");
 }
 //2.内容开始加载(view的过渡动画可在此方法中加载)
 - (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation {
-    NSLog(@"2内容开始加载");
+    NSLog(@"登录界面内容开始加载");
 }
 //3.页面加载完成(view的过渡动画的移除可在此方法中进行)
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
-    NSLog(@"2页面加载完成");
+    NSLog(@"登录界面页面加载完成");
 }
 //4.页面加载失败
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
-    NSLog(@"2页面加载失败");
+    NSLog(@"登录界面页面加载失败");
 }
 
 #pragma mark -- createWebViewJavascriptBridge
 
 - (void)createWebViewJavascriptBridge {
     //初始化  WebViewJavascriptBridge
+    NSLog(@"收到了通知");
     if (_bridge) { return; }
     [WebViewJavascriptBridge enableLogging];
     _bridge = [WebViewJavascriptBridge bridgeForWebView:_webView];

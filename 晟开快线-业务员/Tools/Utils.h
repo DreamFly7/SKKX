@@ -39,5 +39,7 @@
 +(NSMutableArray*)toTowSectionArrayWithOneSectionArray:(NSMutableArray*)array withSection:(NSInteger)section;
 
 +(NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString;
+// 清除WKWebView缓存
++ (void)deleteWebCache;
 
 @end

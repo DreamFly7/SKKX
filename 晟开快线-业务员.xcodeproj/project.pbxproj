@@ -22,6 +22,8 @@
 		BB38408A1FBE7AC300ACB5AF /* WebViewJavascriptBridgeBase.m in Sources */ = {isa = PBXBuildFile; fileRef = BB3840851FBE7AC300ACB5AF /* WebViewJavascriptBridgeBase.m */; };
 		BB38408B1FBE7AC300ACB5AF /* WKWebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BB3840871FBE7AC300ACB5AF /* WKWebViewJavascriptBridge.m */; };
 		BB38408D1FBE809B00ACB5AF /* ExampleApp.html in Resources */ = {isa = PBXBuildFile; fileRef = BB38408C1FBE809B00ACB5AF /* ExampleApp.html */; };
+		BB54D0331FC906820099D34A /* MBProgressHUD+NJ.m in Sources */ = {isa = PBXBuildFile; fileRef = BB54D0321FC906820099D34A /* MBProgressHUD+NJ.m */; };
+		BB54D0351FC908100099D34A /* libMBProgressHUD.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB54D0341FC908100099D34A /* libMBProgressHUD.a */; };
 		BB5CC4411FBD248F00B09519 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5CC4401FBD248F00B09519 /* main.m */; };
 		BB5CC4441FBD248F00B09519 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5CC4431FBD248F00B09519 /* AppDelegate.m */; };
 		BB5CC4471FBD248F00B09519 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5CC4461FBD248F00B09519 /* ViewController.m */; };
@@ -120,7 +122,6 @@
 		BBD558CA1FC2B40A00509289 /* PrintOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD558C91FC2B40A00509289 /* PrintOrderViewController.m */; };
 		BBD558CE1FC2B77800509289 /* libUartLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BBD558CC1FC2B77800509289 /* libUartLib.a */; };
 		BBE209551FC3B7D700680EA4 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBE209541FC3B7D700680EA4 /* LoginViewController.m */; };
-		BBE209581FC3B81800680EA4 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBE209571FC3B81800680EA4 /* RegisterViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -163,6 +164,9 @@
 		BB3840861FBE7AC300ACB5AF /* WKWebViewJavascriptBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKWebViewJavascriptBridge.h; sourceTree = "<group>"; };
 		BB3840871FBE7AC300ACB5AF /* WKWebViewJavascriptBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKWebViewJavascriptBridge.m; sourceTree = "<group>"; };
 		BB38408C1FBE809B00ACB5AF /* ExampleApp.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = ExampleApp.html; sourceTree = "<group>"; };
+		BB54D0311FC906820099D34A /* MBProgressHUD+NJ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+NJ.h"; sourceTree = "<group>"; };
+		BB54D0321FC906820099D34A /* MBProgressHUD+NJ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+NJ.m"; sourceTree = "<group>"; };
+		BB54D0341FC908100099D34A /* libMBProgressHUD.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMBProgressHUD.a; path = "../../Library/Developer/Xcode/DerivedData/晟开快线-业务员-fpjfnizzjplvagbbslcktfqdgenj/Build/Products/Debug-iphonesimulator/MBProgressHUD/libMBProgressHUD.a"; sourceTree = "<group>"; };
 		BB5CC43C1FBD248F00B09519 /* 晟开快线-业务员.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "晟开快线-业务员.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB5CC4401FBD248F00B09519 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BB5CC4421FBD248F00B09519 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -364,8 +368,6 @@
 		BBD558CD1FC2B77800509289 /* UartLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UartLib.h; sourceTree = "<group>"; };
 		BBE209531FC3B7D700680EA4 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		BBE209541FC3B7D700680EA4 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
-		BBE209561FC3B81800680EA4 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
-		BBE209571FC3B81800680EA4 /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -373,6 +375,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB54D0351FC908100099D34A /* libMBProgressHUD.a in Frameworks */,
 				BB80BE8B1FC6A1750027F649 /* libAFNetworking.a in Frameworks */,
 				BB034E001FBEEDEB00411FAD /* SystemConfiguration.framework in Frameworks */,
 				BB034DE91FBEE12000411FAD /* AVFoundation.framework in Frameworks */,
@@ -416,6 +419,7 @@
 		BB034DE71FBEE12000411FAD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BB54D0341FC908100099D34A /* libMBProgressHUD.a */,
 				BB80BE8A1FC6A1750027F649 /* libAFNetworking.a */,
 				BB034DFF1FBEEDEB00411FAD /* SystemConfiguration.framework */,
 				BB034DFD1FBEEDDE00411FAD /* AudioToolbox.framework */,
@@ -1104,6 +1108,8 @@
 		BB5CC5661FBD33B500B09519 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				BB54D0311FC906820099D34A /* MBProgressHUD+NJ.h */,
+				BB54D0321FC906820099D34A /* MBProgressHUD+NJ.m */,
 				BB5CC5671FBD33B500B09519 /* NSArray+Plus.h */,
 				BB5CC5681FBD33B500B09519 /* NSArray+Plus.m */,
 				BB5CC5691FBD33B500B09519 /* NSDate+Plus.h */,
@@ -1191,8 +1197,6 @@
 			children = (
 				BBE209531FC3B7D700680EA4 /* LoginViewController.h */,
 				BBE209541FC3B7D700680EA4 /* LoginViewController.m */,
-				BBE209561FC3B81800680EA4 /* RegisterViewController.h */,
-				BBE209571FC3B81800680EA4 /* RegisterViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1410,6 +1414,7 @@
 				BB5CC5AB1FBD81F400B09519 /* OrderListView.m in Sources */,
 				BBE209551FC3B7D700680EA4 /* LoginViewController.m in Sources */,
 				BB3840891FBE7AC300ACB5AF /* WebViewJavascriptBridge_JS.m in Sources */,
+				BB54D0331FC906820099D34A /* MBProgressHUD+NJ.m in Sources */,
 				BB5CC5801FBD33B500B09519 /* NSDate+Plus.m in Sources */,
 				BB5CC5351FBD336500B09519 /* MJRefreshConst.m in Sources */,
 				BB5CC5501FBD336500B09519 /* UIView+WebCache.m in Sources */,
@@ -1495,7 +1500,6 @@
 				BB5CC53C1FBD336500B09519 /* UIScrollView+MJExtension.m in Sources */,
 				BB5CC4A21FBD310E00B09519 /* MainViewController.m in Sources */,
 				BB5CC5831FBD33B500B09519 /* NSString+Plus.m in Sources */,
-				BBE209581FC3B81800680EA4 /* RegisterViewController.m in Sources */,
 				BB5CC5441FBD336500B09519 /* SDWebImageCompat.m in Sources */,
 				BB5CC52C1FBD336500B09519 /* IQPreviousNextView.m in Sources */,
 				BB034DF21FBEE19200411FAD /* QRCodeScanViewController.m in Sources */,

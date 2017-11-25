@@ -155,6 +155,12 @@
     sendOrderButton.titleLabel.font = [UIFont systemFontOfSize:14];
     hAddEvent(sendOrderButton, sendOrderEvent);
     [self addSubview:sendOrderButton];
+        
+    UIButton * pushButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    pushButton.frame = CGRectMake(SCREEN_W/3, self.height-24, SCREEN_W/3, 20);
+    pushButton.backgroundColor = [UIColor redColor];
+    hAddEvent(pushButton, pushMainViewEvent);
+//    [self addSubview:pushButton];
     
     }
     return self;
@@ -240,6 +246,15 @@
         self.functionBlock(9);
     }
 }
+
+// push视图
+- (void)pushMainViewEvent {
+    NSLog(@"调用push的block");
+    if (self.pushBlock) {
+        self.pushBlock();
+    }
+}
+
 
 // 按钮状态
 - (void)funtionButtonSelectEvent:(NSInteger)buttonNum {

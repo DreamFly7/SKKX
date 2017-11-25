@@ -37,6 +37,9 @@
 @property (nonatomic, strong) LoadingListView       * loadingListView;
 @property (nonatomic, strong) SendOrderView         * sendOrderView;
 
+@property (nonatomic, strong) UIBarButtonItem * leftBarItem; // 隐藏与显示
+@property (nonatomic, assign) BOOL isPushUpTime; // 整个视图推送上去为YES 否则为NO
+
 @end
 
 @implementation MainViewController
@@ -48,6 +51,7 @@
         self.title = @"晟开快线";
         self.view.backgroundColor = ColorWhite;
         hSetBackButton(@"");
+        _isPushUpTime = NO;
     }
     return self;
 }
@@ -60,20 +64,29 @@
 
 
 - (void)addRightBtn {
+    
+    _leftBarItem = [[UIBarButtonItem alloc] initWithTitle:@"隐藏" style:UIBarButtonItemStylePlain target:self action:@selector(pushMainView)];
+    [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14], NSForegroundColorAttributeName: [UIColor redColor]} forState:UIControlStateNormal];
+    self.navigationItem.leftBarButtonItem = _leftBarItem;
+    
     UIBarButtonItem * rightBarItem = [[UIBarButtonItem alloc] initWithTitle:@"注销" style:UIBarButtonItemStylePlain target:self action:@selector(onClickedOutbtn)];
     [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14], NSForegroundColorAttributeName: [UIColor redColor]} forState:UIControlStateNormal];
     self.navigationItem.rightBarButtonItem = rightBarItem;
+    
 }
 
 - (void)createMainView {
     // 功能按钮区
-    _functionView = [[FunctionView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_W, SCREEN_W/5*2)];
+    _functionView = [[FunctionView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_W, SCREEN_W/5*2+20)];
     _functionView.backgroundColor = [UIColor whiteColor];
     _functionView.layer.borderWidth = 0;
     _functionView.layer.borderColor = ColorFontGrayLittle.CGColor;
     __weak typeof(self) weakSelf = self;
     _functionView.functionBlock = ^(NSUInteger functionNum) {
         [weakSelf functionMainEvent:functionNum];
+    };
+    _functionView.pushBlock = ^() {
+        [weakSelf pushMainView];
     };
     [self.view addSubview:_functionView];
     
@@ -94,78 +107,98 @@
     // 获取通知中心单例对象
     NSNotificationCenter * center = [NSNotificationCenter defaultCenter];
     // 添加当前类对象为一个观察者，接收来自用户中心切换版本时候的通知
-    [center addObserver:self selector:@selector(createAllFunctionView) name:@"applicationDidBecomeActive" object:nil]; // 进入前台
     [center addObserver:self selector:@selector(sweepQrCodeEvent) name:@"scanning" object:nil];  // 交账扫描二维码
     [center addObserver:self selector:@selector(sweepQrCodeEvent) name:@"loading" object:nil];   // 装车扫描二维码
     [center addObserver:self selector:@selector(printOrderEvent) name:@"printOrder" object:nil]; // 打印订单
     
 }
 
+#pragma mark -- 分线程加载界面
+
 - (void)createAllFunctionView {
     /* 使用GCD返回主线程 进行UI层面的赋值 */
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        _invoiceListView    = [[InvoiceListView alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+44,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
+        _invoiceListView    = [[InvoiceListView alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+64,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
         [self invoiceListEvent]; // 默认首页
+        [self gainPlistPath];
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+//            _placeOrderView     = [[PlaceOrderView       alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+44,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
+//            _accountMoneyView   = [[AccountMoneyView     alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+44,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
+//            _searchOrderView    = [[SearchOrderView      alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+44,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
+//            _collectionMoneyView = [[CollectionMoneyView alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+44,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
+//            _orderListView      = [[OrderListView        alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+44,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
+//            _financeView        = [[FinanceView          alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+44,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
+//            _arriveListView     = [[ArriveListView       alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+44,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
+//            _loadingListView    = [[LoadingListView      alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+44,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
+//            _sendOrderView      = [[SendOrderView        alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+44,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
             
-            _placeOrderView     = [[PlaceOrderView       alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+44,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
-            _accountMoneyView   = [[AccountMoneyView     alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+44,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
-            _searchOrderView    = [[SearchOrderView      alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+44,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
-            _collectionMoneyView = [[CollectionMoneyView alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+44,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
-            _orderListView      = [[OrderListView        alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+44,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
-            _financeView        = [[FinanceView          alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+44,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
-            _arriveListView     = [[ArriveListView       alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+44,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
-            _loadingListView    = [[LoadingListView      alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+44,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
-            _sendOrderView      = [[SendOrderView        alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+44,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
-            
-        });
+//        });
     });
 }
 
-// 财务
+#pragma mark -- 功能键的调用方法集结
+
 - (void)functionMainEvent:(NSUInteger)functionNum {
+    NSString * functionStr = [[NSString alloc] init];
+    functionStr = [self readFunctionNumEvent];
+    NSInteger functionN = [functionStr intValue];
+    if (functionNum == functionN) { // 重复点击当前界面时
+        return;
+    }
     NSLog(@"成功调用BLOCK");
     switch (functionNum) {
         case 0:
             NSLog(@"开单事件调用");
+            _placeOrderView     = [[PlaceOrderView       alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+64,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
             [self placeOrderEvent];
+            
             break;
         case 1:
             NSLog(@"交账事件调用");
+            _accountMoneyView   = [[AccountMoneyView     alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+64,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
             [self accountMoneyEvent];
             break;
         case 2:
             NSLog(@"搜索事件调用");
+            _searchOrderView    = [[SearchOrderView      alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+64,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
             [self searchOrderEvent];
             break;
         case 3:
             NSLog(@"代收事件调用");
+            _collectionMoneyView = [[CollectionMoneyView alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+64,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
             [self collectionMoneyEvent];
             break;
         case 4:
             NSLog(@"订单事件调用");
+            _orderListView      = [[OrderListView        alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+64,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
             [self orderListEvent];
             break;
         case 5:
             NSLog(@"财务事件调用");
+            _financeView        = [[FinanceView          alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+64,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
             [self financeEvent];
             break;
         case 6:
             NSLog(@"发货单事件调用");
+            _invoiceListView    = [[InvoiceListView alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+64,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
             [self invoiceListEvent];
             break;
         case 7:
             NSLog(@"即达单事件调用");
+            _arriveListView     = [[ArriveListView       alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+64,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
             [self arriveListEvent];
             break;
         case 8:
             NSLog(@"装车事件调用");
+            _loadingListView    = [[LoadingListView      alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+64,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
             [self loadingListEvent];
             break;
         case 9:
             NSLog(@"派单记录事件调用");
+            _sendOrderView      = [[SendOrderView        alloc] initWithFrame:CGRectMake(0,SCREEN_W/5*2+64,SCREEN_W,SCREEN_H-(SCREEN_W/5*2))];
             [self sendOrderEvent];
             break;
         default:
@@ -173,17 +206,21 @@
     }
 }
 
+#pragma mark -- 加载界面以及清除其他界面
+
 // 开单
 - (void)placeOrderEvent {
     NSLog(@"开单事件调用成功");
     [self.view addSubview:_placeOrderView];
     [self deallocView:_placeOrderView];
+    [self writeFunctionNumEvent:@"0"];
 }
 // 交账
 - (void)accountMoneyEvent {
     NSLog(@"交账事件调用成功");
     [self.view addSubview:_accountMoneyView];
     [self deallocView:_accountMoneyView];
+    [self writeFunctionNumEvent:@"1"];
 }
 
 // 搜索
@@ -191,36 +228,42 @@
     NSLog(@"搜索事件调用成功");
     [self.view addSubview:_searchOrderView];
     [self deallocView:_searchOrderView];
+    [self writeFunctionNumEvent:@"2"];
 }
 // 代收
 - (void)collectionMoneyEvent {
     NSLog(@"代收事件调用成功");
     [self.view addSubview:_collectionMoneyView];
     [self deallocView:_collectionMoneyView];
+    [self writeFunctionNumEvent:@"3"];
 }
 // 订单
 - (void)orderListEvent {
     NSLog(@"订单事件调用成功");
     [self.view addSubview:_orderListView];
     [self deallocView:_orderListView];
+    [self writeFunctionNumEvent:@"4"];
 }
 // 财务
 - (void)financeEvent {
     NSLog(@"财务事件调用成功");
     [self.view addSubview:_financeView];
     [self deallocView:_financeView];
+    [self writeFunctionNumEvent:@"5"];
 }
 // 发货单
 - (void)invoiceListEvent {
     NSLog(@"发货单事件调用成功");
     [self.view addSubview:_invoiceListView];
     [self deallocView:_invoiceListView];
+    [self writeFunctionNumEvent:@"6"];
 }
 // 即达单
 - (void)arriveListEvent {
     NSLog(@"即达单事件调用成功");
     [self.view addSubview:_arriveListView];
     [self deallocView:_arriveListView];
+    [self writeFunctionNumEvent:@"7"];
 }
 
 // 装车
@@ -228,14 +271,17 @@
     NSLog(@"装车事件调用成功");
     [self.view addSubview:_loadingListView];
     [self deallocView:_loadingListView];
+    [self writeFunctionNumEvent:@"8"];
 }
 // 派单
 - (void)sendOrderEvent {
     NSLog(@"历史记录事件调用成功");
     [self.view addSubview:_sendOrderView];
     [self deallocView:_sendOrderView];
+    [self writeFunctionNumEvent:@"9"];
 }
 
+#pragma mark -- 清除不显示的界面
 
 // 清除不使用的视图View
 -(void)deallocView:(UIView *)selfView {
@@ -271,6 +317,45 @@
     }
 }
 
+#pragma mark -- 拉伸与收缩视图
+- (void)pushMainView {
+    NSLog(@"推动视图");
+    // 设置动画的名字
+    [UIView beginAnimations:@"Animation" context:nil];
+    // 设置动画的间隔时间
+    [UIView setAnimationDuration:0.20];
+    // 使用当前正在运行的状态开始下一段动画
+    [UIView setAnimationBeginsFromCurrentState: YES];
+    if (_isPushUpTime) {
+        //设置视图移动的下移
+        self.view.frame = CGRectMake(self.view.frame.origin.x,
+                                     self.view.frame.origin.y + ((SCREEN_W/5)*2)-50,
+                                     self.view.frame.size.width,
+                                     self.view.frame.size.height);
+        _leftBarItem.title = @"隐藏";
+        _isPushUpTime = NO;
+        //创建一个消息对象 通知WEB界面缩短
+        NSNotification * notice = [NSNotification notificationWithName:@"pushDown" object:nil userInfo:nil];
+        //发送消息
+        [[NSNotificationCenter defaultCenter] postNotification:notice];
+    } else {
+        //设置视图移动的上移
+        self.view.frame = CGRectMake(self.view.frame.origin.x,
+                                     self.view.frame.origin.y - ((SCREEN_W/5)*2)+50,
+                                     self.view.frame.size.width,
+                                     self.view.frame.size.height);
+        _leftBarItem.title = @"显示";
+        _isPushUpTime = YES;
+        //创建一个消息对象 通知WEB界面加长
+        NSNotification * notice = [NSNotification notificationWithName:@"pushUp" object:nil userInfo:nil];
+        //发送消息
+        [[NSNotificationCenter defaultCenter] postNotification:notice];
+    }
+    //设置动画结束
+    [UIView commitAnimations];
+}
+
+#pragma mark -- 跳转至扫描二维码界面
 // 扫描二维码
 - (void)sweepQrCodeEvent {
     QRCodeScanViewController * qrCodeView = [[QRCodeScanViewController alloc] init];
@@ -279,6 +364,7 @@
     hPushViewController(qrCodeView);
 }
 
+#pragma mark -- 跳转至蓝牙打印以及传输打印的数据
 // 蓝牙打印
 - (void)printOrderEvent {
     PrintOrderViewController * printOrderView = [[PrintOrderViewController alloc] init];
@@ -314,8 +400,28 @@
     }];
 }
 
+// 1.获得文件路径
+- (void)gainPlistPath {
+    NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+    _plistFile     = [path stringByAppendingPathComponent:@"functionNum.plist"];
+}
+// 2.储存一个值
+- (void)writeFunctionNumEvent:(NSString *)functionStr {
+    NSMutableArray * array = [NSMutableArray array];
+    [array insertObject:functionStr atIndex:0];
+    NSLog(@"需要存储的数据%@",array);
+    [array writeToFile:_plistFile atomically:YES];
+}
+// 3.取本地持久化的这个值
+- (NSString *)readFunctionNumEvent {
+    NSArray * result = [NSArray arrayWithContentsOfFile:_plistFile];
+    NSLog(@"读取出来的数据%@",result);
+    NSString * functionStr = result[0];
+    return functionStr;
+}
 
-// 退出登录
+#pragma mark -- 注销账户
+// 注销
 - (void)onClickedOutbtn {
     //UIAlertController风格：UIAlertControllerStyleAlert
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示"

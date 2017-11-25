@@ -14,33 +14,31 @@
     if (self = [super initWithFrame:frame]) {
         [self createWebView];
         [self createWebViewJavascriptBridge];
+        // 获取通知中心单例对象
+        NSNotificationCenter * center = [NSNotificationCenter defaultCenter];
+        // 添加当前类对象为一个观察者，接收来自用户中心切换版本时候的通知
+        [center addObserver:self selector:@selector(changeUpWebHeight) name:@"pushUp" object:nil];  // WEB加长
+        [center addObserver:self selector:@selector(changeDownWebHeight) name:@"pushDown" object:nil];  // WEB缩短
     }
     return self;
 }
 
 -(void)createWebView{
-    UIFont * font = [UIFont fontWithName:@"HelveticaNeue" size:16.0];
-    UIButton * reloadButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    reloadButton.frame = CGRectMake(110,200, 100, 35);
-    reloadButton.titleLabel.font = font;
-    [reloadButton setTitle:@"重新加载" forState:UIControlStateNormal];
-    reloadButton.titleLabel.textColor = [UIColor blueColor];
-    [reloadButton addTarget:_webView action:@selector(reload) forControlEvents:UIControlEventTouchUpInside];
-//    [self addSubview:reloadButton];
-    [self insertSubview:reloadButton aboveSubview:_webView];
-    
-    _webView = [[WKWebView alloc]initWithFrame:CGRectMake(0, 20, SCREEN_W, SCREEN_H-(SCREEN_W/5*2+64))];
+    _webView = [[WKWebView alloc] init];
+    _webView.frame = CGRectMake(0, 0, SCREEN_W, SCREEN_H-(SCREEN_W/5*2+64));
     _webView.backgroundColor = [UIColor whiteColor];
     _webView.navigationDelegate = self;
-    NSString * path = [[NSString alloc] init];
-    path = [NSString stringWithFormat:@"http://skit-hz.com/book/SKKX/do.html"];
-    
-    NSURL * url = [[NSURL alloc] initWithString:path];
-//    [_webView loadRequest:[NSURLRequest requestWithURL:url]];
-    //    _webView.dataDetectorTypes = UIDataDetectorTypeNone; //隐藏链接下划线
     _webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     [self addSubview:_webView];
-    
+    [MBProgressHUD showMessage:@"正在加载数据中....."];
+}
+
+- (void)changeUpWebHeight {
+    _webView.frame = CGRectMake(0, 0, SCREEN_W, SCREEN_H-64-50);
+}
+
+- (void)changeDownWebHeight {
+    _webView.frame = CGRectMake(0, 0, SCREEN_W, SCREEN_H-(SCREEN_W/5*2+64));
 }
 
 #pragma mark- Delegate Webview
@@ -55,10 +53,14 @@
 //3.页面加载完成(view的过渡动画的移除可在此方法中进行)
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     NSLog(@"3页面加载完成");
+    // 移除HUD
+    [MBProgressHUD hideHUD];
 }
 //4.页面加载失败
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
     NSLog(@"3页面加载失败");
+    // 提醒有没有新数据
+    [MBProgressHUD showError:@"加载失败"];
 }
 
 #pragma mark -- createWebViewJavascriptBridge
@@ -72,7 +74,6 @@
     
     //请求加载html，注意：这里h5加载完，会自动执行一个调用oc的方法
     [self loadExamplePage:_webView];
-//    [self renderButtons:_webView];
     
     //申明js调用oc方法的处理事件，这里写了后，h5那边只要请求了，oc内部就会响应
     [self JS2OC];
@@ -82,26 +83,6 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self OC2JS];
     });
-}
-
-- (void)renderButtons:(WKWebView*)webView {
-    UIFont* font = [UIFont fontWithName:@"HelveticaNeue" size:12.0];
-    
-    UIButton *callbackButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [callbackButton setTitle:@"Call handler" forState:UIControlStateNormal];
-    [callbackButton addTarget:self action:@selector(OC2JS) forControlEvents:UIControlEventTouchUpInside];
-    [self insertSubview:callbackButton aboveSubview:webView];
-    callbackButton.frame = CGRectMake(10, 200, 100, 35);
-    callbackButton.titleLabel.font = font;
-    
-    UIButton* reloadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [reloadButton setTitle:@"重新加载" forState:UIControlStateNormal];
-    reloadButton.titleLabel.font = hFontSize(16);
-    reloadButton.titleLabel.textColor = [UIColor blueColor];
-    [reloadButton addTarget:webView action:@selector(reload) forControlEvents:UIControlEventTouchUpInside];
-    [self insertSubview:reloadButton aboveSubview:webView];
-    reloadButton.frame = CGRectMake(110,200, 100, 35);
-    reloadButton.titleLabel.font = font;
 }
 
 - (void)loadExamplePage:(WKWebView*)webView {
