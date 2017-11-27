@@ -61,10 +61,12 @@
     [MBProgressHUD hideHUD];
 }
 //4.页面加载失败
-- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
-    NSLog(@"10页面加载失败");
+- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error {
+    NSLog(@"3页面加载失败");
+    // 移除HUD
+    [MBProgressHUD hideHUD];
     // 提醒有没有新数据
-    [MBProgressHUD showError:@"加载失败"];
+    [MBProgressHUD showError:@"加载失败，请检查网络连接"];
 }
 
 

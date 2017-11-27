@@ -31,8 +31,8 @@
     // 隐藏时候从父控件中移除
     hud.removeFromSuperViewOnHide = YES;
     
-    // 1秒之后再消失
-    [hud hide:YES afterDelay:0.7];
+    // 1.0秒之后再消失
+    [hud hide:YES afterDelay:1.0];
 }
 
 /**

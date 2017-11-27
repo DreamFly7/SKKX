@@ -38,7 +38,7 @@
     _webView.navigationDelegate = self;
     _webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     [self.view addSubview:_webView];
-    
+    [MBProgressHUD showMessage:@"正在加载数据中....."];
 }
 
 #pragma mark- Delegate Webview
@@ -53,10 +53,14 @@
 //3.页面加载完成(view的过渡动画的移除可在此方法中进行)
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     NSLog(@"登录界面页面加载完成");
+    // 移除HUD
+    [MBProgressHUD hideHUD];
 }
 //4.页面加载失败
-- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
-    NSLog(@"登录界面页面加载失败");
+- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error {
+    NSLog(@"3页面加载失败");
+    // 提醒有没有新数据
+    [MBProgressHUD showError:@"加载失败，请检查网络连接"];
 }
 
 #pragma mark -- createWebViewJavascriptBridge
