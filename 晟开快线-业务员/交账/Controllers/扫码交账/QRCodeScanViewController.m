@@ -8,6 +8,7 @@
 
 #import "QRCodeScanViewController.h"
 #import <AVFoundation/AVFoundation.h>
+#import "AccountMoneyViewController.h"
 
 @interface QRCodeScanViewController () <AVCaptureMetadataOutputObjectsDelegate>
 
@@ -21,41 +22,17 @@
 @property (nonatomic, strong) NSTimer * timer;
 
 //采集的设备
-@property (strong,nonatomic) AVCaptureDevice * device;
+@property (nonatomic, strong) AVCaptureDevice * device;
 //设备的输入
-@property (strong,nonatomic) AVCaptureDeviceInput * input;
+@property (nonatomic, strong) AVCaptureDeviceInput * input;
 //输出
-@property (strong,nonatomic) AVCaptureMetadataOutput * output;
+@property (nonatomic, strong) AVCaptureMetadataOutput * output;
 //采集流
-@property (strong,nonatomic) AVCaptureSession * session;
+@property (nonatomic, strong) AVCaptureSession * session;
 //窗口
-@property (strong,nonatomic) AVCaptureVideoPreviewLayer * previewLayer;
-
-@property (nonatomic, strong) UIView * BGView;
-
-@property (nonatomic, strong) UILabel * nameTitle; // title
-@property (nonatomic, strong) NSDictionary * orderMessageDataDic;// 订单信息
-@property (nonatomic, strong) UILabel * lineLabel1;
-@property (nonatomic, strong) UILabel * lineLabel2;
-@property (nonatomic, strong) UILabel * lineLabel3;
-@property (nonatomic, strong) UILabel * sendPersonalLabel;  // 寄件方
-@property (nonatomic, strong) UILabel * receiptLabel;       // 收件方
-@property (nonatomic, strong) UITextField * orderNumberTextField; // 订单号
-@property (nonatomic, strong) UITextField * startSendTextField;   // 始发地
-@property (nonatomic, strong) UITextField * endReceiptTextField;  // 目的地
-@property (nonatomic, strong) UITextField * sendPhoneNumberTextField;// 寄件电话
-@property (nonatomic, strong) UITextField * sendCompanyNameTextField;// 寄件公司名
-@property (nonatomic, strong) UITextField * sendAddressTextField;    // 寄件地址
-@property (nonatomic, strong) UITextView  * notesTextView;           // 配件名或备注
-@property (nonatomic, strong) UITextField * receiptPhoneNumberTextField;// 收件电话
-@property (nonatomic, strong) UITextField * receiptCompanyNameTextField;// 收件公司名
-@property (nonatomic, strong) UITextField * receiptAddressTextField;    // 收件地址
-@property (nonatomic, strong) UITextField * collectingTextField;// 代收
-@property (nonatomic, strong) UITextField * numberTextField;    // 件数
-@property (nonatomic, strong) UITextField * moneyTextField;     // 运费
-@property (nonatomic, strong) UILabel     * notesLabel;         // 备注
-@property (nonatomic, strong) UIButton    * changeButton;       // 修改按钮
-@property (nonatomic, strong) NSArray * stateArray;
+@property (nonatomic, strong) AVCaptureVideoPreviewLayer * previewLayer;
+//扫描出的订单号
+@property (nonatomic, strong) NSString * orderStr;
 
 @end
 
@@ -65,7 +42,7 @@
 {
     self = [super init];
     if (self) {
-        self.title = @"扫描二维码";
+        self.title = @"扫描收账";
         self.view.backgroundColor = ColorWhite;
         hSetBackButton(@"");
     }
@@ -75,34 +52,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self startScan]; 
-}
-
-
-
-#pragma mark -- createView
-// 自定义导航栏
-- (void)createNAvView{
-    
-    UIView * navBgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_W, 64)];
-    navBgView.backgroundColor = RGBCOLOR(6, 144, 240);
-    [self.view addSubview:navBgView];
-    
-    _nameTitle = [[UILabel alloc] initWithFrame:CGRectMake(SCREEN_W*0.35, 10, SCREEN_W*0.3, 60)];
-    _nameTitle.text = @"二维码扫描";
-    _nameTitle.textColor = [UIColor whiteColor];
-    _nameTitle.textAlignment = NSTextAlignmentCenter;
-    [navBgView addSubview:_nameTitle];
-    
-    UIButton * backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 5, 60, navBgView.frame.size.height)];
-    [navBgView addSubview:backBtn];
-    [backBtn setImage:[UIImage imageNamed:@"zuojiantou"] forState:0];
-    [backBtn setImageEdgeInsets:UIEdgeInsetsMake(27, 15, 20, 24)];
-    hAddGestureSingleTab(backBtn, backViewAction);
-    
-}
-
-- (void)backViewAction{
-    hDismissView;
 }
 
 #pragma mark - add subviews
@@ -198,7 +147,6 @@
     
     // Start 开始扫描   //开始捕获
     [_session startRunning];
-    
     self.timer.fireDate = [NSDate distantPast];
     
 }
@@ -245,6 +193,14 @@
         stringValue = metadataObject.stringValue;
     }
     
+    NSArray * strArray = [stringValue componentsSeparatedByString:@","]; //从字符A中分隔成2个元素的数组
+    if (strArray.count == 1) {
+        
+    } else {
+        [Utils alertWithMessage:@"请勿扫描代收凭证联的二维码"];
+        return;
+    }
+    
     //停止扫描
     [_session stopRunning];
     self.timer.fireDate = [NSDate distantFuture];
@@ -252,9 +208,9 @@
     // 跳转到收账界面
     // [self searchOrderData:stringValue];
     
-    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"扫描成功" message:[NSString stringWithFormat:@"订单号：%@", stringValue] preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"是否确定收账？" message:[NSString stringWithFormat:@"订单号：%@", stringValue] preferredStyle:UIAlertControllerStyleAlert];
     
-    UIAlertAction * actionCancel = [UIAlertAction actionWithTitle:@"重新扫描" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction * actionCancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
         [_session startRunning];
         
@@ -270,7 +226,9 @@
         
         _timer = nil;
         
-        // [self searchOrderData:stringValue];//搜索扫描出来的订单号
+        _orderStr = stringValue;
+        
+        [self accountRequestEvent]; // 进行交账
         
     }];
 
@@ -349,6 +307,38 @@
     }
     
     return _timer;
+}
+
+#pragma mark -- 收账的网络请求
+- (void)accountRequestEvent {
+    UserModel * user = [UserModel sharedUser];
+    NSMutableDictionary * params = [NSMutableDictionary dictionary];
+    [params setValue:_orderStr      forKey:@"orderid"];
+    [params setValue:user.cellphone forKey:@"telephone"];
+    NSLog(@"请求参数%@",params);
+    [[HttpManage shareInstance] postAccountUrlWithParmaeters:params Success:^(NSMutableDictionary *dic) {
+        NSLog(@"收账返回数据：%@",dic);
+        NSString * codeStr = [NSString stringWithFormat:@"%@",dic[@"code"]];
+        NSString * message = [NSString stringWithFormat:@"%@",dic[@"message"]];
+        if ([codeStr isEqualToString:@"1"]) {
+            [Utils alertWithMessage:@"收账成功"];
+            //创建一个消息对象 刷新交账界面
+            NSDictionary * dict = @{@"functionNum":@"1"};
+            //创建一个消息对象 在MainVC接收并再次请求数据
+            NSNotification * notice = [NSNotification notificationWithName:@"refreshNotice" object:nil userInfo:dict];
+            NSLog(@"发送消息");
+            //发送消息
+            [[NSNotificationCenter defaultCenter] postNotification:notice];
+            [self startScan];
+        } else {
+            UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"提示" message:message preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction * actioneReStart = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [self startScan];
+            }];
+            [alertController addAction:actioneReStart];
+            [self presentViewController:alertController animated:YES completion:nil];
+        }
+    }];
 }
 
 @end

@@ -1,18 +1,16 @@
 //
-//  CollectionMoneyViewController.m
+//  InvoiceQRCodeScanVC.m
 //  晟开快线-业务员
 //
-//  Created by 胡隆海 on 17/11/16.
+//  Created by 胡隆海 on 17/12/5.
 //  Copyright © 2017年 胡隆海. All rights reserved.
 //
 
-#import "CollectionMoneyViewController.h"
-#import "CollectionMoneyView.h"
+#import "InvoiceQRCodeScanVC.h"
 #import <AVFoundation/AVFoundation.h>
 #import "AccountMoneyViewController.h"
 
-@interface CollectionMoneyViewController () <AVCaptureMetadataOutputObjectsDelegate>
-
+@interface InvoiceQRCodeScanVC ()<AVCaptureMetadataOutputObjectsDelegate>
 //扫描框
 @property (nonatomic, strong) UIView * view_bg;
 //扫描线
@@ -34,17 +32,16 @@
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer * previewLayer;
 //扫描出的订单号
 @property (nonatomic, strong) NSString * orderStr;
-@property (nonatomic, strong) NSString * verificationStr;
 
 @end
 
-@implementation CollectionMoneyViewController
+@implementation InvoiceQRCodeScanVC
 
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        self.title = @"扫描代收";
+        self.title = @"扫描发货";
         self.view.backgroundColor = ColorWhite;
         hSetBackButton(@"");
     }
@@ -195,16 +192,13 @@
         stringValue = metadataObject.stringValue;
     }
     
-    
     NSArray * strArray = [stringValue componentsSeparatedByString:@","]; //从字符A中分隔成2个元素的数组
-    if (strArray.count == 2) {
-        _orderStr = [NSString stringWithFormat:@"%@",strArray[0]];
-        _verificationStr = [NSString stringWithFormat:@"%@",strArray[1]];
+    if (strArray.count == 1) {
+        
     } else {
-        [Utils alertWithMessage:@"请扫描代收凭证联的二维码"];
+        [Utils alertWithMessage:@"请勿扫描代收凭证联的二维码"];
         return;
     }
-    
     
     //停止扫描
     [_session stopRunning];
@@ -213,7 +207,7 @@
     // 跳转到收账界面
     // [self searchOrderData:stringValue];
     
-    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"是否确定代收？" message:[NSString stringWithFormat:@"订单号：%@", _orderStr] preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"是否确定发货？" message:[NSString stringWithFormat:@"订单号：%@", stringValue] preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction * actionCancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
@@ -231,7 +225,9 @@
         
         _timer = nil;
         
-        [self accountRequestEvent]; // 进行代收
+        _orderStr = stringValue;
+        
+        [self accountRequestEvent]; // 进行发货
         
     }];
     
@@ -298,7 +294,7 @@
     }
     
     return _lab_word;
-}  
+}
 
 - (NSTimer *)timer {
     
@@ -314,24 +310,21 @@
 
 #pragma mark -- 收账的网络请求
 - (void)accountRequestEvent {
-    UserModel * user = [UserModel sharedUser];
     NSMutableDictionary * params = [NSMutableDictionary dictionary];
     [params setValue:_orderStr      forKey:@"orderid"];
-    [params setValue:user.cellphone forKey:@"merchandiser"];
-    [params setValue:user.station   forKey:@"dot"];
-//    [params setValue:_verificationStr forKey:@"verificationCode"];
-    NSLog(@"请求参数 id:%@     业务员:%@       网点:%@",params[@"orderid"],params[@"merchandiser"],params[@"dot"]);
-    [[HttpManage shareInstance] postEnquiriesUrlWithParmaeters:params Success:^(NSMutableDictionary *dic) {
-        NSLog(@"代收返回数据：%@",dic);
+    NSLog(@"请求参数%@",params);
+    [[HttpManage shareInstance] postLoadingUrlWithParmaeters:params Success:^(NSMutableDictionary *dic) {
+        NSLog(@"收账返回数据：%@",dic);
         NSString * codeStr = [NSString stringWithFormat:@"%@",dic[@"code"]];
         NSString * message = [NSString stringWithFormat:@"%@",dic[@"message"]];
         if ([codeStr isEqualToString:@"1"]) {
-            [Utils alertWithMessage:@"代收成功"];
-            //创建一个消息对象 刷新代收
-            NSDictionary * dict = @{@"functionNum":@"3"};
+            [Utils alertWithMessage:@"发货成功"];
+            //创建一个消息对象 刷新交账界面
+            NSDictionary * dict = @{@"functionNum":@"6"};
             //创建一个消息对象 在MainVC接收并再次请求数据
             NSNotification * notice = [NSNotification notificationWithName:@"refreshNotice" object:nil userInfo:dict];
             //发送消息
+            NSLog(@"发送消息");
             [[NSNotificationCenter defaultCenter] postNotification:notice];
             [self startScan];
         } else {
@@ -344,7 +337,5 @@
         }
     }];
 }
-
-
 
 @end

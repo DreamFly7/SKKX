@@ -9,7 +9,7 @@
 #import "FunctionView.h"
 
 #define ImageEdgeInsets UIEdgeInsetsMake(SCREEN_W*0.01, SCREEN_W*0.05, SCREEN_W*0.09, SCREEN_W*0.05)
-#define TitleEdgeInsets UIEdgeInsetsMake(SCREEN_W*0.1, -SCREEN_W*0.3, 0, SCREEN_W*0.01)
+#define TitleEdgeInsets UIEdgeInsetsMake(SCREEN_W*0.1, -SCREEN_W*0.29, 0, SCREEN_W*0.01)
 
 
 @interface FunctionView()
@@ -30,6 +30,12 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
+        
+    // 获取通知中心单例对象
+    NSNotificationCenter * center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(changeFahuodanNotice:)  name:@"fahuodan" object:nil]; // 重新加载
+    [center addObserver:self selector:@selector(invoiceListEvent)       name:@"returnFahuodan" object:nil]; // 打印完成时加载发货单界面
+    [center addObserver:self selector:@selector(collectionMoneyEvent)   name:@"returnDaiShou" object:nil];
         
     CGFloat buttonSize = SCREEN_W/5;
     
@@ -83,7 +89,7 @@
     
     orderButton = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_W*0.8, 0, buttonSize, buttonSize)];
     orderButton.backgroundColor = [UIColor whiteColor];
-    [orderButton setTitle:@"订单" forState:UIControlStateNormal];
+    [orderButton setTitle:@"开发中" forState:UIControlStateNormal];
     [orderButton setImage:[UIImage imageNamed:@"sd-h"] forState:UIControlStateNormal];
     [orderButton setImage:[UIImage imageNamed:@"sd"] forState:UIControlStateSelected];
     [orderButton setImageEdgeInsets:ImageEdgeInsets];
@@ -122,7 +128,7 @@
     
     arriveButton = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_W*0.4, buttonSize, buttonSize, buttonSize)];
     arriveButton.backgroundColor = [UIColor whiteColor];
-    [arriveButton setTitle:@"即达单" forState:UIControlStateNormal];
+    [arriveButton setTitle:@"网点现付" forState:UIControlStateNormal];
     [arriveButton setImage:[UIImage imageNamed:@"jdd-h"] forState:UIControlStateNormal];
     [arriveButton setImage:[UIImage imageNamed:@"jdd"] forState:UIControlStateSelected];
     [arriveButton setImageEdgeInsets:ImageEdgeInsets];
@@ -134,7 +140,7 @@
     
     loadingButton = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_W*0.6, buttonSize, buttonSize, buttonSize)];
     loadingButton.backgroundColor = [UIColor whiteColor];
-    [loadingButton setTitle:@"装车" forState:UIControlStateNormal];
+    [loadingButton setTitle:@"开发中" forState:UIControlStateNormal];
     [loadingButton setImage:[UIImage imageNamed:@"zc-h"] forState:UIControlStateNormal];
     [loadingButton setImage:[UIImage imageNamed:@"zc"] forState:UIControlStateSelected];
     [loadingButton setImageEdgeInsets:ImageEdgeInsets];
@@ -146,7 +152,7 @@
     
     sendOrderButton = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_W*0.8, buttonSize, buttonSize, buttonSize)];
     sendOrderButton.backgroundColor = [UIColor whiteColor];
-    [sendOrderButton setTitle:@"派单" forState:UIControlStateNormal];
+    [sendOrderButton setTitle:@"打印机" forState:UIControlStateNormal];
     [sendOrderButton setImage:[UIImage imageNamed:@"pd-h"] forState:UIControlStateNormal];
     [sendOrderButton setImage:[UIImage imageNamed:@"pd"] forState:UIControlStateSelected];
     [sendOrderButton setImageEdgeInsets:ImageEdgeInsets];
@@ -166,45 +172,102 @@
     return self;
 }
 
+// 改变发货单的字符
+- (void)changeFahuodanNotice:(NSNotification *)notification{
+    NSString * currentPostionXStr = notification.userInfo[@"currentPostionX"];
+    NSInteger currentPostionX = [currentPostionXStr intValue];
+    if (currentPostionX == 0) {
+        [invoiceButton setTitle:@"发货单" forState:UIControlStateNormal];
+        [invoiceButton setImage:[UIImage imageNamed:@"fhd-h"] forState:UIControlStateNormal];
+        [invoiceButton setImage:[UIImage imageNamed:@"fhd"] forState:UIControlStateSelected];
+    } else if (currentPostionX == 375) {
+        [invoiceButton setTitle:@"即达单" forState:UIControlStateNormal];
+        [invoiceButton setImage:[UIImage imageNamed:@"jdd-h"] forState:UIControlStateNormal];
+        [invoiceButton setImage:[UIImage imageNamed:@"jdd"] forState:UIControlStateSelected];
+    } else if (currentPostionX == 750) {
+        [invoiceButton setTitle:@"到货单" forState:UIControlStateNormal];
+        [invoiceButton setImage:[UIImage imageNamed:@"pd-h"] forState:UIControlStateNormal];
+        [invoiceButton setImage:[UIImage imageNamed:@"pd"] forState:UIControlStateSelected];
+    }
+}
+
+
 // 开单
 - (void)placeOrderEvent {
     NSLog(@"开始调用BLOCK");
-    [self funtionButtonSelectEvent:0];
-    if (self.functionBlock) {
-        self.functionBlock(0);
+    UserModel * user = [UserModel sharedUser];
+    NSString * vipCode = [NSString stringWithFormat:@"%@", user.vipid];
+    NSLog(@"%@",vipCode);
+    NSString * vipCodeStr = [vipCode substringWithRange:NSMakeRange(0,1)];
+    NSLog(@"vipCodeStr:%@",vipCodeStr);
+    if ([vipCodeStr isEqualToString:@"1"]) {
+        [self funtionButtonSelectEvent:0];
+        if (self.functionBlock) {
+            self.functionBlock(0);
+        }
+    } else {
+        [Utils alertWithMessage:@"您没有权限进入！"];
     }
 }
 // 交账
 - (void)accountMoneyEvent {
     NSLog(@"开始调用BLOCK");
-    [self funtionButtonSelectEvent:1];
-    if (self.functionBlock) {
-        self.functionBlock(1);
+    UserModel * user = [UserModel sharedUser];
+    NSString * vipCode = [NSString stringWithFormat:@"%@", user.vipid];
+    NSLog(@"%@",vipCode);
+    NSString * vipCodeStr = [vipCode substringWithRange:NSMakeRange(1,1)];
+    NSLog(@"vipCodeStr:%@",vipCodeStr);
+    if ([vipCodeStr isEqualToString:@"1"]) {
+        [self funtionButtonSelectEvent:1];
+        if (self.functionBlock) {
+            self.functionBlock(1);
+        }
+    } else {
+        [Utils alertWithMessage:@"您没有权限进入！"];
     }
 }
 // 搜索
 - (void)searchOrderEvent {
     NSLog(@"开始调用BLOCK");
-    [self funtionButtonSelectEvent:2];
-    if (self.functionBlock) {
-        self.functionBlock(2);
+    UserModel * user = [UserModel sharedUser];
+    NSString * vipCode = [NSString stringWithFormat:@"%@", user.vipid];
+    NSLog(@"%@",vipCode);
+    NSString * vipCodeStr = [vipCode substringWithRange:NSMakeRange(0,1)];
+    NSLog(@"vipCodeStr:%@",vipCodeStr);
+    if ([vipCodeStr isEqualToString:@"1"]) {
+        [self funtionButtonSelectEvent:2];
+        if (self.functionBlock) {
+            self.functionBlock(2);
+        }
+    } else {
+        [Utils alertWithMessage:@"您没有权限进入！"];
     }
 }
 // 代收
 - (void)collectionMoneyEvent {
     NSLog(@"开始调用BLOCK");
-    [self funtionButtonSelectEvent:3];
-    if (self.functionBlock) {
-        self.functionBlock(3);
+    UserModel * user = [UserModel sharedUser];
+    NSString * vipCode = [NSString stringWithFormat:@"%@", user.vipid];
+    NSLog(@"%@",vipCode);
+    NSString * vipCodeStr = [vipCode substringWithRange:NSMakeRange(2,1)];
+    NSLog(@"vipCodeStr:%@",vipCodeStr);
+    if ([vipCodeStr isEqualToString:@"1"]) {
+        [self funtionButtonSelectEvent:3];
+        if (self.functionBlock) {
+            self.functionBlock(3);
+        }
+    } else {
+        [Utils alertWithMessage:@"您没有权限进入！"];
     }
 }
 // 订单
 - (void)orderListEvent {
     NSLog(@"开始调用BLOCK");
-    [self funtionButtonSelectEvent:4];
-    if (self.functionBlock) {
-        self.functionBlock(4);
-    }
+//    [self funtionButtonSelectEvent:4];
+//    if (self.functionBlock) {
+//        self.functionBlock(4);
+//    }
+    [Utils alertWithMessage:@"开发中"];
 }
 // 财务
 - (void)financeEvent {
@@ -217,9 +280,18 @@
 // 发货单
 - (void)invoiceListEvent {
     NSLog(@"开始调用BLOCK");
-    [self funtionButtonSelectEvent:6];
-    if (self.functionBlock) {
-        self.functionBlock(6);
+    UserModel * user = [UserModel sharedUser];
+    NSString * vipCode = [NSString stringWithFormat:@"%@", user.vipid];
+    NSLog(@"%@",vipCode);
+    NSString * vipCodeStr = [vipCode substringWithRange:NSMakeRange(0,1)];
+    NSLog(@"vipCodeStr:%@",vipCodeStr);
+    if ([vipCodeStr isEqualToString:@"1"]) {
+        [self funtionButtonSelectEvent:6];
+        if (self.functionBlock) {
+            self.functionBlock(6);
+        }
+    } else {
+        [Utils alertWithMessage:@"您没有权限进入！"];
     }
 }
 // 即达单
@@ -229,22 +301,25 @@
     if (self.functionBlock) {
         self.functionBlock(7);
     }
+//    [Utils alertWithMessage:@"开发中"];
 }
 // 装车
 - (void)loadingListEvent {
     NSLog(@"开始调用BLOCK");
-    [self funtionButtonSelectEvent:8];
-    if (self.functionBlock) {
-        self.functionBlock(8);
-    }
+//    [self funtionButtonSelectEvent:8];
+//    if (self.functionBlock) {
+//        self.functionBlock(8);
+//    }
+    [Utils alertWithMessage:@"开发中"];
 }
 // 历史记录
 - (void)sendOrderEvent {
     NSLog(@"开始调用BLOCK");
-    [self funtionButtonSelectEvent:9];
+//    [self funtionButtonSelectEvent:9];
     if (self.functionBlock) {
         self.functionBlock(9);
     }
+//    [Utils alertWithMessage:@"开发中"];
 }
 
 // push视图

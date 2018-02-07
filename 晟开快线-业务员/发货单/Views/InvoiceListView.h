@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface InvoiceListView : UIView<WKNavigationDelegate>
-@property (nonatomic, strong) WKWebView * webView;
-@property WebViewJavascriptBridge * bridge;
+@interface InvoiceListView : UIView<WKNavigationDelegate,UIScrollViewDelegate>
+@property (nonatomic, strong) UIScrollView * scrollView;
+@property (nonatomic, strong) WKWebView * webViewOne;
+@property (nonatomic, strong) WKWebView * webViewTwo;
+@property (nonatomic, strong) WKWebView * webViewThree;
+@property WebViewJavascriptBridge * bridgeOne;
+@property WebViewJavascriptBridge * bridgeTwo;
 @end

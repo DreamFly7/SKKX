@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface QRCodeScanViewController : UIViewController
-@property (nonatomic, assign) BOOL loading;
+
 @end

@@ -16,7 +16,7 @@
         [self createWebViewJavascriptBridge];
         // 获取通知中心单例对象
         NSNotificationCenter * center = [NSNotificationCenter defaultCenter];
-        // 添加当前类对象为一个观察者，接收来自用户中心切换版本时候的通知
+        // 添加当前类对象为一个观察者，接收来自Main上拉下拉的通知
         [center addObserver:self selector:@selector(changeUpWebHeight) name:@"pushUp" object:nil];  // WEB加长
         [center addObserver:self selector:@selector(changeDownWebHeight) name:@"pushDown" object:nil];  // WEB缩短
     }
@@ -28,6 +28,9 @@
     _webView.frame = CGRectMake(0, 0, SCREEN_W, SCREEN_H-(SCREEN_W/5*2+64));
     _webView.backgroundColor = [UIColor whiteColor];
     _webView.navigationDelegate = self;
+    // 滑动返回
+    _webView.allowsBackForwardNavigationGestures = YES;
+//    _webView.scrollView.scrollEnabled = NO; // 禁止侧滑
     _webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     [self addSubview:_webView];
     [MBProgressHUD showMessage:@"正在加载数据中....."];
@@ -63,6 +66,24 @@
     [MBProgressHUD hideHUD];
     // 提醒有没有新数据
     [MBProgressHUD showError:@"加载失败，请检查网络连接"];
+    UIButton * refreshButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    refreshButton.frame = CGRectMake(SCREEN_W/3, SCREEN_H*0.5, SCREEN_W/3, 40);
+    refreshButton.layer.masksToBounds = YES;
+    refreshButton.layer.cornerRadius = 20;
+    refreshButton.backgroundColor = RGBCOLOR(188, 188, 188);
+    [refreshButton setTitle:@"重新加载" forState:UIControlStateNormal];
+    [refreshButton setTitleColor:ColorFontBlack forState:UIControlStateNormal];
+    [refreshButton addTarget:self action:@selector(refreshEvent) forControlEvents:UIControlEventTouchUpInside];
+    [self insertSubview:refreshButton aboveSubview:_webView];
+}
+
+- (void)refreshEvent {
+    NSLog(@"刷新界面");
+    NSDictionary * dict = @{@"functionNum":@"1"};
+    //创建一个消息对象 在MainVC接收并再次请求数据
+    NSNotification * notice = [NSNotification notificationWithName:@"refreshNotice" object:nil userInfo:dict];
+    //发送消息
+    [[NSNotificationCenter defaultCenter] postNotification:notice];
 }
 
 #pragma mark -- createWebViewJavascriptBridge
@@ -89,7 +110,7 @@
 
 - (void)loadExamplePage:(WKWebView*)webView {
       NSString * path = [[NSString alloc] init];
-      path = [NSString stringWithFormat:@"http://skit-hz.com/book/SKKX/do.html"];
+      path = [NSString stringWithFormat:@"http://123.206.24.66:8888/formal/do.html"];
       NSURL * url = [[NSURL alloc] initWithString:path];
       [webView loadRequest:[NSURLRequest requestWithURL:url]];
 }
@@ -109,9 +130,9 @@
         
         NSDictionary * dict = (NSDictionary *)data;
         NSLog(@"收到JS端的请求参数：%@",dict);
-        //创建一个消息对象 在首页接收跳转界面
+        // 创建一个消息对象 在首页接收跳转扫描二维码
         NSNotification * notice = [NSNotification notificationWithName:@"scanning" object:nil userInfo:nil];
-        //发送消息
+        // 发送消息
         [[NSNotificationCenter defaultCenter] postNotification:notice];
         // responseCallback 给js的回复
         responseCallback(@"报告，oc已收到js的请求");

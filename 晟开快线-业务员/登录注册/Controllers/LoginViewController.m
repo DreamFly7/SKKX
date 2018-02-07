@@ -7,6 +7,7 @@
 //
 
 #import "LoginViewController.h"
+#import "NewPringViewController.h"
 
 @interface LoginViewController ()<WKNavigationDelegate>
 @property (nonatomic, strong) WKWebView * webView;
@@ -36,7 +37,14 @@
     _webView = [[WKWebView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_W, SCREEN_H)];
     _webView.backgroundColor = [UIColor whiteColor];
     _webView.navigationDelegate = self;
+    _webView.scrollView.bounces = NO;
+    // 滑动返回
+    _webView.allowsBackForwardNavigationGestures = YES;
     _webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    NSString * path = [[NSString alloc] init];
+    path = [NSString stringWithFormat:@"http://123.206.24.66:8888/formal/login.html"];
+    NSURL * url = [[NSURL alloc] initWithString:path];
+    [_webView loadRequest:[NSURLRequest requestWithURL:url]];
     [self.view addSubview:_webView];
     [MBProgressHUD showMessage:@"正在加载数据中....."];
 }
@@ -55,12 +63,33 @@
     NSLog(@"登录界面页面加载完成");
     // 移除HUD
     [MBProgressHUD hideHUD];
+    
 }
 //4.页面加载失败
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error {
     NSLog(@"3页面加载失败");
+    // 移除HUD
+    [MBProgressHUD hideHUD];
     // 提醒有没有新数据
     [MBProgressHUD showError:@"加载失败，请检查网络连接"];
+    
+    UIButton * refreshButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    refreshButton.frame = CGRectMake(SCREEN_W/3, SCREEN_H*0.6, SCREEN_W/3, 40);
+    refreshButton.layer.masksToBounds = YES;
+    refreshButton.layer.cornerRadius = 20;
+    refreshButton.backgroundColor = RGBCOLOR(188, 188, 188);
+    [refreshButton setTitle:@"重新加载" forState:UIControlStateNormal];
+    [refreshButton setTitleColor:ColorFontBlack forState:UIControlStateNormal];
+    [refreshButton addTarget:self action:@selector(refreshEvent) forControlEvents:UIControlEventTouchUpInside];
+    [self.view insertSubview:refreshButton aboveSubview:_webView];
+}
+
+- (void)refreshEvent {
+    NSLog(@"刷新界面");
+    //创建一个消息对象 在首页接收跳转界面
+    NSNotification * notice = [NSNotification notificationWithName:@"loginFail" object:nil userInfo:nil];
+    //发送消息
+    [[NSNotificationCenter defaultCenter] postNotification:notice];
 }
 
 #pragma mark -- createWebViewJavascriptBridge
@@ -74,7 +103,7 @@
     [_bridge setWebViewDelegate:self];
     
     //请求加载html，注意：这里h5加载完，会自动执行一个调用oc的方法
-    [self loadExamplePage:_webView];
+//    [self loadExamplePage:_webView];
     
     //申明js调用oc方法的处理事件，这里写了后，h5那边只要请求了，oc内部就会响应
     [self JS2OC];
@@ -87,10 +116,7 @@
 }
 
 - (void)loadExamplePage:(WKWebView*)webView {
-    NSString * path = [[NSString alloc] init];
-    path = [NSString stringWithFormat:@"http://skit-hz.com/book/SKKX/login.html"];
-    NSURL * url = [[NSURL alloc] initWithString:path];
-    [webView loadRequest:[NSURLRequest requestWithURL:url]];
+    
 }
 
 -(void)JS2OC{
@@ -102,12 +128,23 @@
      */
     [_bridge registerHandler:@"loginAction" handler:^(id data, WVJBResponseCallback responseCallback) {
         // data js页面传过来的参数  假设这里是用户名和姓名，字典格式
-        NSLog(@"JS调用OC，并传值过来");
-        
         // 利用data参数处理自己的逻辑
         
         NSDictionary * dict = (NSDictionary *)data;
-        NSLog(@"收到JS端的请求参数：%@",dict);
+        NSLog(@"登录收到JS端返回的用户数据：%@",dict);
+        UserModel * user = [UserModel sharedUser];
+        [[UserModel sharedUser] clearUserInfo];
+        user.companyname    = [NSString stringWithFormat:@"%@", dict[@"data"][@"corporateName"]];
+        user.companyaddress = [NSString stringWithFormat:@"%@", dict[@"data"][@"companyAddress"]];
+        user.companytel     = [NSString stringWithFormat:@"%@", dict[@"data"][@"companyTelephone"]];
+        user.userId         = [NSString stringWithFormat:@"%@", dict[@"data"][@"id"]];
+        user.userName       = [NSString stringWithFormat:@"%@", dict[@"data"][@"name"]];
+        user.cellphone      = [NSString stringWithFormat:@"%@", dict[@"data"][@"telephone"]];
+        user.password       = [NSString stringWithFormat:@"%@", dict[@"data"][@"password"]];
+        user.vipid          = [NSString stringWithFormat:@"%@", dict[@"data"][@"privilege"]];
+        user.station        = [NSString stringWithFormat:@"%@", dict[@"data"][@"dot"]];
+        [[UserModel sharedUser] saveToLocal];
+        
         //创建一个消息对象 在首页接收跳转界面
         NSNotification * notice = [NSNotification notificationWithName:@"loginSuccess" object:nil userInfo:nil];
         //发送消息

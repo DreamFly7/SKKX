@@ -245,7 +245,7 @@
 
 // 清除WKWebView缓存
 + (void)deleteWebCache {
-    
+    NSLog(@"清除缓存");
     if ([[UIDevice currentDevice].systemVersion floatValue] >= 9.0) {
 //        NSSet *websiteDataTypes = [NSSet setWithArray:@[
 //                                                        WKWebsiteDataTypeDiskCache,

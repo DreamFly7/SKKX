@@ -35,6 +35,7 @@
     //添加当前类对象为一个观察者，接收来自登录中心切换版本时候的通知
     [center addObserver:self selector:@selector(toMainVc) name:@"loginSuccess" object:nil];
     [center addObserver:self selector:@selector(toLoginVc) name:@"logoutSuccess" object:nil];
+    [center addObserver:self selector:@selector(toLoginVc) name:@"loginFail" object:nil];
     return YES;
 }
 
@@ -65,7 +66,10 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     NSLog(@"进入后台");
-    [Utils deleteWebCache]; // 清除WKWeb缓存的数据
+    //创建一个消息对象 通知界面正常
+    NSNotification * notice = [NSNotification notificationWithName:@"applicationDidBecomeActive" object:nil userInfo:nil];
+    //发送消息
+    [[NSNotificationCenter defaultCenter] postNotification:notice];
 }
 
 
@@ -75,14 +79,15 @@
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     NSLog(@"进入前台");
 }
 
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    NSLog(@"退出APP");
 }
+
+
 
 
 @end

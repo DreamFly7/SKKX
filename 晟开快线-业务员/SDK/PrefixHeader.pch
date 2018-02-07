@@ -23,5 +23,6 @@
 #import <WebKit/WebKit.h>
 #import "MBProgressHUD+NJ.h"  // 请求
 #import "WebViewJavascriptBridge.h" // OC与JS交互
+#import "UserModel.h"
 
 #endif

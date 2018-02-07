@@ -15,7 +15,7 @@
         [self createWebView];
         // 获取通知中心单例对象
         NSNotificationCenter * center = [NSNotificationCenter defaultCenter];
-        // 添加当前类对象为一个观察者，接收来自用户中心切换版本时候的通知
+        // 添加当前类对象为一个观察者，接收来自Main上拉下拉的通知
         [center addObserver:self selector:@selector(changeUpWebHeight) name:@"pushUp" object:nil];  // WEB加长
         [center addObserver:self selector:@selector(changeDownWebHeight) name:@"pushDown" object:nil];  // WEB缩短
     }
@@ -28,7 +28,7 @@
     _webView.backgroundColor = [UIColor whiteColor];
     _webView.navigationDelegate = self;
     NSString * path = [[NSString alloc] init];
-    path = [NSString stringWithFormat:@"http://skit-hz.com/book/SKKX/da.html"];
+    path = [NSString stringWithFormat:@"http://123.206.24.66:8888/formal/now_pay.html"];
     
     NSURL * url = [[NSURL alloc] initWithString:path];
     [_webView loadRequest:[NSURLRequest requestWithURL:url]];
@@ -67,6 +67,24 @@
     [MBProgressHUD hideHUD];
     // 提醒有没有新数据
     [MBProgressHUD showError:@"加载失败，请检查网络连接"];
+    UIButton * refreshButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    refreshButton.frame = CGRectMake(SCREEN_W/3, SCREEN_H*0.5, SCREEN_W/3, 40);
+    refreshButton.layer.masksToBounds = YES;
+    refreshButton.layer.cornerRadius = 20;
+    refreshButton.backgroundColor = RGBCOLOR(188, 188, 188);
+    [refreshButton setTitle:@"重新加载" forState:UIControlStateNormal];
+    [refreshButton setTitleColor:ColorFontBlack forState:UIControlStateNormal];
+    [refreshButton addTarget:self action:@selector(refreshEvent) forControlEvents:UIControlEventTouchUpInside];
+    [self insertSubview:refreshButton aboveSubview:_webView];
+}
+
+- (void)refreshEvent {
+    NSLog(@"刷新界面");
+    NSDictionary * dict = @{@"functionNum":@"7"};
+    //创建一个消息对象 在MainVC接收并再次请求数据
+    NSNotification * notice = [NSNotification notificationWithName:@"refreshNotice" object:nil userInfo:dict];
+    //发送消息
+    [[NSNotificationCenter defaultCenter] postNotification:notice];
 }
 
 

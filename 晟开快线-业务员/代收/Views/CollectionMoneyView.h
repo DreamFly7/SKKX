@@ -10,4 +10,5 @@
 
 @interface CollectionMoneyView : UIView<WKNavigationDelegate>
 @property (nonatomic, strong) WKWebView * webView;
+@property WebViewJavascriptBridge * bridge;
 @end

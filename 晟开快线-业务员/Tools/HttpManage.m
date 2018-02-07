@@ -23,23 +23,28 @@
     return manage;
 }
 
-// 当前版本
--(void)postVersionWithParmaeters:(NSMutableDictionary*)dic Success:(void(^)(NSMutableDictionary * dic))block{
-    [[BaseBusiness sharedInstance] requestPostDataWithAPI:RequestVersion params:dic callBack:^(BOOL success, NSMutableDictionary *json) {
+// 发货
+-(void)postLoadingUrlWithParmaeters:(NSMutableDictionary*)dic Success:(void(^)(NSMutableDictionary * dic))block {
+    [[BaseBusiness sharedInstance] requestPostDataWithAPI:LoadingUrl params:dic callBack:^(BOOL success, NSMutableDictionary *json) {
+        block(json);
+    }];
+}
+// 收货
+-(void)postArriveUrlWithParmaeters:(NSMutableDictionary*)dic Success:(void(^)(NSMutableDictionary * dic))block {
+    [[BaseBusiness sharedInstance] requestPostDataWithAPI:ArriveUrl params:dic callBack:^(BOOL success, NSMutableDictionary *json) {
+        block(json);
+    }];
+}
+// 交账
+-(void)postAccountUrlWithParmaeters:(NSMutableDictionary*)dic Success:(void(^)(NSMutableDictionary * dic))block {
+    [[BaseBusiness sharedInstance] requestPostDataWithAPI:AccountUrl params:dic callBack:^(BOOL success, NSMutableDictionary *json) {
         block(json);
     }];
 }
 
-// 注册
--(void)postRegisterwithParmaeters:(NSMutableDictionary*)dic Success:(void(^)(NSMutableDictionary * dic))block{
-    [[BaseBusiness sharedInstance] requestPostDataWithAPI:RequestRegister params:dic callBack:^(BOOL success, NSMutableDictionary *json) {
-        block(json);
-    }];
-}
-
-// 登录
--(void)postLoginWithParmaeters:(NSMutableDictionary*)dic Success:(void(^)(NSMutableDictionary *dic))block {
-    [[BaseBusiness sharedInstance] requestPostDataWithAPI:RequestLogin params:dic callBack:^(BOOL success, NSMutableDictionary *json) {
+// 代收
+-(void)postEnquiriesUrlWithParmaeters:(NSMutableDictionary*)dic Success:(void(^)(NSMutableDictionary * dic))block {
+    [[BaseBusiness sharedInstance] requestPostDataWithAPI:Enquiries params:dic callBack:^(BOOL success, NSMutableDictionary *json) {
         block(json);
     }];
 }

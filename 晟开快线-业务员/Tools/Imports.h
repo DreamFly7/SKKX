@@ -33,5 +33,6 @@
 #import "AFNetworking.h"
 #import "UIImageView+WebCache.h"
 #import "MJRefresh.h"
+#import "PrintTool.h"
 
 #endif
